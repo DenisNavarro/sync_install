@@ -1,0 +1,67 @@
+use std::collections::BTreeMap;
+
+use anyhow::bail;
+
+use crate::command::{command, Command};
+
+mod crate_name {
+    crate::nonempty_str::newtype!(CrateName, error_msg = "empty crate name");
+}
+pub use crate_name::CrateName;
+
+pub struct CargoInstall<'a>(CrateName<'a>, Command<'a>);
+
+pub fn parse_line_with_cargo_install<'a>(
+    left_trimmed_line: &'a str,
+    cargo_map: &mut BTreeMap<CrateName<'a>, Command<'a>>,
+) -> anyhow::Result<CargoInstall<'a>> {
+    assert_eq!(left_trimmed_line.trim_start(), left_trimmed_line);
+    assert!(left_trimmed_line.contains("cargo install "));
+    let expected_suffix = "; \\";
+    let Some(command_str) = left_trimmed_line.strip_suffix(expected_suffix) else {
+        bail!("line with \"cargo install \" but which does not end with {expected_suffix:?}");
+    };
+    // `left_trimmed_line.contains("cargo install ")`` so `unwrap()` is OK.
+    let crate_name_start_index =
+        command_str.find("cargo install ").unwrap() + "cargo_install ".len();
+    // `str::split` cannot return an empty iterator so `unwrap()` is OK.
+    let crate_name_str = command_str[crate_name_start_index..].split(' ').next().unwrap();
+    let crate_name = CrateName::from_str(crate_name_str)?;
+    // The line is left timmed so `command_str` starts with a non-whitespace so `unwrap()` is OK.
+    let command = Command::from_str(command_str).unwrap();
+    if let Some(previous_command) = cargo_map.insert(crate_name, command.clone()) {
+        bail!(
+            "{crate_name_str:?} crate already installed in a previous line: the command was [{}]",
+            previous_command.format()
+        );
+    }
+    Ok(CargoInstall(crate_name, command))
+}
+
+#[allow(clippy::option_if_let_else)]
+pub fn compute_crate_install_or_update_command<'a>(
+    current_state_cargo_map: &BTreeMap<CrateName<'a>, Command<'a>>,
+    target_state_action: &CargoInstall<'a>,
+) -> Option<Command<'a>> {
+    let CargoInstall(crate_name, target_state_command) = target_state_action;
+    if let Some(current_state_command) = current_state_cargo_map.get(crate_name) {
+        if current_state_command == target_state_command {
+            None
+        } else {
+            Some(target_state_command.concat_args(std::iter::once("--force".into())))
+        }
+    } else {
+        Some(target_state_command.clone())
+    }
+}
+
+pub fn compute_crate_removal_commands<'a, 'b>(
+    current_state_cargo_map: &'b BTreeMap<CrateName<'a>, Command<'a>>,
+    target_state_cargo_map: &'b BTreeMap<CrateName<'a>, Command<'a>>,
+) -> impl Iterator<Item = Command<'a>> + 'b {
+    current_state_cargo_map
+        .keys()
+        .copied()
+        .filter(|crate_name| !target_state_cargo_map.contains_key(crate_name))
+        .map(|crate_name| command!["cargo", "uninstall", crate_name.as_str()].unwrap())
+}

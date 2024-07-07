@@ -1,0 +1,28 @@
+[package]
+edition = "2021"
+name = "sync_install"
+version = "0.1.0"
+
+[dependencies]
+anyhow = "1"
+camino = "1"
+clap = { version = "4", features = ["derive"] }
+home = "0.5"
+itertools = "0.13"
+platform-info = "2"
+
+[dev-dependencies]
+cargo_metadata = "0.18"
+
+[profile.dev]
+debug = false
+
+[profile.release]
+strip = true
+
+[lints.rust]
+unsafe_code = "forbid"
+
+[lints.clippy]
+nursery = "warn"
+pedantic = "warn"

@@ -1,0 +1,12 @@
+[git_hooks.commit-msg]
+script = """#!/bin/sh
+set -e
+cog verify --file $1
+"""
+
+[git_hooks.pre-commit]
+script = """#!/bin/sh
+cargo fmt --check
+cargo clippy --all-features --all-targets -- -D warnings
+cargo test
+"""
