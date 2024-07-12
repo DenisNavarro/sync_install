@@ -7,7 +7,7 @@
 ## Installation
 
 ```bash
-cargo install --git https://github.com/DenisNavarro/sync_install
+cargo install --git https://github.com/DenisNavarro/sync_install --locked
 ```
 
 ## Usage
