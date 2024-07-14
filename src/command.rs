@@ -17,12 +17,12 @@ impl<'a> Command<'a> {
         Ok(())
     }
     pub fn from_vec(program_and_args: Vec<Cow<'a, str>>) -> anyhow::Result<Self> {
-        Command::ensure_invariant(&program_and_args)?;
-        Ok(Command(program_and_args))
+        Self::ensure_invariant(&program_and_args)?;
+        Ok(Self(program_and_args))
     }
     pub fn from_str(program_and_args: &'a str) -> anyhow::Result<Self> {
         // I don't need `shlex::split` for my use case.
-        Command::from_vec(program_and_args.split(' ').map(Into::into).collect())
+        Self::from_vec(program_and_args.split(' ').map(Into::into).collect())
     }
     #[allow(dead_code)] // False positive: called in `tests.rs` (2024-07-07)
     #[inline]
@@ -34,7 +34,7 @@ impl<'a> Command<'a> {
         self.0.split_first().unwrap()
     }
     pub fn concat_args(&self, args: impl IntoIterator<Item = Cow<'a, str>>) -> Self {
-        Command(self.0.iter().cloned().chain(args).collect())
+        Self(self.0.iter().cloned().chain(args).collect())
     }
     pub fn format(&self) -> impl fmt::Display + '_ {
         // I don't need `shlex::try_join` for my use case.
