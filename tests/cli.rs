@@ -24,7 +24,6 @@ fn example_from_the_cli_help_and_the_readme() -> anyhow::Result<()> {
 }
 
 fn get_cargo_target_dir() -> anyhow::Result<Utf8PathBuf> {
-    let cmd = MetadataCommand::new();
-    let metadata = cmd.exec().with_context(|| format!("failed to execute command {cmd:?}"))?;
+    let metadata = MetadataCommand::new().exec().context("failed to execute metadata command")?;
     Ok(metadata.target_directory)
 }
