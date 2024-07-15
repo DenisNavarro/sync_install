@@ -1,10 +1,10 @@
 #[macro_export]
 macro_rules! newtype {
-    ($type_name:ident, error_msg = $error_msg:expr) => {
+    ($ty:ident, error_msg = $error_msg:expr $(,)?) => {
         #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
-        pub struct $type_name<'a>(&'a str);
+        pub struct $ty<'a>(&'a str);
 
-        impl<'a> $type_name<'a> {
+        impl<'a> $ty<'a> {
             pub fn from_str(value: &'a str) -> anyhow::Result<Self> {
                 anyhow::ensure!(!value.is_empty(), $error_msg);
                 Ok(Self(value))
