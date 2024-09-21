@@ -8,9 +8,7 @@ rust-version = "1.81.0"
 anyhow = "1"
 camino = "1"
 clap = { version = "4", features = ["derive"] }
-home = "0.5"
 itertools = "0.13"
-platform-info = "2"
 
 [dev-dependencies]
 cargo_metadata = "0.18"

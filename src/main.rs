@@ -19,8 +19,6 @@ use std::path::{Path, PathBuf};
 
 use anyhow::{bail, Context};
 use clap::Parser;
-use home::home_dir; // std::env::home_dir is deprecated since Rust 1.29.0.
-use platform_info::{PlatformInfo, PlatformInfoAPI, UNameAPI};
 
 use command::Command;
 use command_computing::{compute_commands, parse_state_from_file_content};
@@ -97,20 +95,17 @@ fn main() -> anyhow::Result<()> {
         my_writeln!("This is a dry run. Add the --go option to execute the below command(s).")?;
     }
     let data = get_input_data(current_state_file_path, target_state_file_path)?;
-    let machine = get_machine(&data)?; // example: "x86_64"
     let current_state = parse_state_from_file_content(&data.current_state_file_content)
         .with_context(|| format!("failed to parse the content of {current_state_file_path:?}"))?;
     let target_state = parse_state_from_file_content(&data.target_state_file_content)
         .with_context(|| format!("failed to parse the content of {target_state_file_path:?}"))?;
-    let mut commands = compute_commands(&current_state, &target_state, &data.home_path, machine);
+    let mut commands = compute_commands(&current_state, &target_state);
     commands.try_for_each(|command| print_and_execute(&command, dry_run))
 }
 
 struct InputData {
     current_state_file_content: String,
     target_state_file_content: String,
-    home_path: String,
-    platform_info: PlatformInfo,
 }
 
 fn get_input_data(
@@ -121,25 +116,7 @@ fn get_input_data(
         .with_context(|| format!("failed to read {current_state_file_path:?}"))?;
     let target_state_file_content = fs::read_to_string(target_state_file_path)
         .with_context(|| format!("failed to read {target_state_file_path:?}"))?;
-    let home_path = home_dir().context("failed to get the home directory path")?;
-    let home_path = match home_path.into_os_string().into_string() {
-        Ok(home_path) => home_path,
-        Err(home_path) => bail!("non UTF-8 home directory path: {:?}", home_path.to_string_lossy()),
-    };
-    let Ok(platform_info) = PlatformInfo::new() else {
-        bail!("failed to determine platform info");
-    };
-    Ok(InputData {
-        current_state_file_content,
-        target_state_file_content,
-        home_path,
-        platform_info,
-    })
-}
-
-fn get_machine(data: &InputData) -> anyhow::Result<&str> {
-    let machine = data.platform_info.machine();
-    machine.to_str().with_context(|| format!("non UTF-8 machine: {:?}", machine.to_string_lossy()))
+    Ok(InputData { current_state_file_content, target_state_file_content })
 }
 
 fn print_and_execute(command: &Command, dry_run: bool) -> anyhow::Result<()> {
