@@ -1,7 +1,7 @@
 FROM docker.io/library/rust:1.78.0-slim-bookworm
 RUN set -eux; \
-    cargo install bat --version 0.24.0 --locked; \
     cargo install cargo-cache --version 0.8.3; \
-    cargo install xh --version 0.22.0 --locked; \
+    cargo install cocogitto --version 6.1.0 --locked; \
+    cargo install pixi --git https://github.com/prefix-dev/pixi.git --tag v0.30.0 --locked; \
     cargo cache -r all
 CMD ["/bin/bash"]

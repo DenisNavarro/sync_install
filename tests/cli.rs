@@ -3,9 +3,9 @@ use camino::Utf8PathBuf;
 use cargo_metadata::MetadataCommand;
 
 const EXPECTED_OUTPUT: &str = r"This is a dry run. Add the --go option to execute the below command(s).
----> [cargo uninstall genact]
+---> [cargo uninstall fsays]
 ---> [cargo install cargo-cache --version 0.8.3 --force]
----> [cargo install xh --version 0.22.0 --locked]
+---> [cargo install pixi --git https://github.com/prefix-dev/pixi.git --tag v0.30.0 --locked]
 ";
 
 #[test]

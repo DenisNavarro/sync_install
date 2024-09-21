@@ -7,7 +7,7 @@ use crate::command_computing::parse_state_from_file_content;
 #[test]
 fn cargo_install_without_expected_suffix() -> anyhow::Result<()> {
     parse_first_arg_and_check_error_contains(
-        "RUN cargo install xh --version 0.22.0 --locked",
+        "RUN cargo install fsays --version 0.3.0 --locked",
         [
             "failed to parse line 1: ",
             r#"line with "cargo install " but which does not end with "; \\""#,
@@ -29,13 +29,13 @@ fn cargo_install_without_crate_name() -> anyhow::Result<()> {
 fn same_crate_in_a_previous_line() -> anyhow::Result<()> {
     parse_first_arg_and_check_error_contains(
         r"RUN set -eux; \
-            cargo install bat --version 0.23.0 --locked; \
-            cargo install bat --version 0.24.0 --locked; \
+            cargo install fsays --version 0.1.0 --locked; \
+            cargo install fsays --version 0.3.0 --locked; \
             cargo cache -r all",
         [
             "failed to parse line 3: ",
-            r#""bat" crate already installed in a previous line: "#,
-            "the command was [cargo install bat --version 0.23.0 --locked]",
+            r#""fsays" crate already installed in a previous line: "#,
+            "the command was [cargo install fsays --version 0.1.0 --locked]",
         ],
     )
 }
@@ -43,7 +43,7 @@ fn same_crate_in_a_previous_line() -> anyhow::Result<()> {
 #[test]
 fn pixi_global_install_without_expected_suffix() -> anyhow::Result<()> {
     parse_first_arg_and_check_error_contains(
-        "RUN pixi global install git=2.45.1",
+        "RUN pixi global install git=2.46.0",
         [
             "failed to parse line 1: ",
             r#"line with "pixi global install " but which does not end with "; \\""#,
@@ -55,7 +55,7 @@ fn pixi_global_install_without_expected_suffix() -> anyhow::Result<()> {
 fn pixi_global_install_without_expected_prefix() -> anyhow::Result<()> {
     parse_first_arg_and_check_error_contains(
         r"RUN set -eux; \
-            echo pixi global install git=2.45.1; \
+            echo pixi global install git=2.46.0; \
             pixi global list",
         [
             "failed to parse line 2: ",
@@ -89,7 +89,7 @@ fn pixi_global_install_without_equal() -> anyhow::Result<()> {
 fn pixi_global_install_with_empty_recipe() -> anyhow::Result<()> {
     parse_first_arg_and_check_error_contains(
         r"RUN set -eux; \
-            pixi global install =2.45.1; \
+            pixi global install =2.46.0; \
             pixi global list",
         ["failed to parse line 2: ", "empty recipe"],
     )
@@ -99,12 +99,12 @@ fn pixi_global_install_with_empty_recipe() -> anyhow::Result<()> {
 fn same_recipe_in_a_previous_line() -> anyhow::Result<()> {
     parse_first_arg_and_check_error_contains(
         r"RUN set -eux; \
-            pixi global install git=2.44.0; \
-            pixi global install git=2.45.1; \
+            pixi global install git=2.45.2; \
+            pixi global install git=2.46.0; \
             pixi global list",
         [
             "failed to parse line 3: ",
-            r#""git" recipe already installed in a previous line: it was git=2.44.0"#,
+            r#""git" recipe already installed in a previous line: it was git=2.45.2"#,
         ],
     )
 }
