@@ -40,7 +40,6 @@ pub fn parse_line_with_pixi_global_install<'a>(
     Ok(PixiGlobalInstall(recipe, recipe_and_version))
 }
 
-#[allow(clippy::option_if_let_else)]
 pub fn compute_recipe_install_or_update_command<'a>(
     current_state_pixi_map: &BTreeMap<Recipe<'a>, RecipeAndVersion<'a>>,
     target_state_action: PixiGlobalInstall<'a>,

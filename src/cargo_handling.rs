@@ -38,7 +38,6 @@ pub fn parse_line_with_cargo_install<'a>(
     Ok(CargoInstall(crate_name, command))
 }
 
-#[allow(clippy::option_if_let_else)]
 pub fn compute_crate_install_or_update_command<'a>(
     current_state_cargo_map: &BTreeMap<CrateName<'a>, Command<'a>>,
     target_state_action: &CargoInstall<'a>,
