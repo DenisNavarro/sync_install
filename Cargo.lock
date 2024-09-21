@@ -265,6 +265,7 @@ dependencies = [
  "cargo_metadata",
  "clap",
  "itertools",
+ "serde_json",
 ]
 
 [[package]]

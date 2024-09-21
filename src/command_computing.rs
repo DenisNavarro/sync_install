@@ -7,6 +7,7 @@ use crate::cargo_handling::{
     parse_line_with_cargo_install, CargoInstall, CrateName,
 };
 use crate::command::Command;
+use crate::common::quote;
 use crate::pixi_handling::{
     compute_recipe_install_or_update_command, compute_recipe_removal_commands,
     parse_line_with_pixi_global_install, PixiGlobalInstall, Recipe, RecipeAndVersion,
@@ -43,7 +44,7 @@ pub fn parse_state_from_file_content(file_content: &str) -> anyhow::Result<State
             }
             anyhow::Ok(())
         })()
-        .with_context(|| format!("failed to parse line {line_number}: {line:?}"))?;
+        .with_context(|| format!("failed to parse line {line_number}: {}", quote(line)))?;
     }
     Ok(State { ordered_actions, cargo_map, pixi_map })
 }

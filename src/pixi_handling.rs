@@ -3,6 +3,7 @@ use std::collections::BTreeMap;
 use anyhow::{bail, Context};
 
 use crate::command::{command, Command};
+use crate::common::quote;
 
 mod nonempty_str_types {
     crate::nonempty_str::newtype!(Recipe, error_msg = "empty recipe");
@@ -21,11 +22,17 @@ pub fn parse_line_with_pixi_global_install<'a>(
     assert!(left_trimmed_line.contains("pixi global install "));
     let expected_suffix = "; \\";
     let Some(command_str) = left_trimmed_line.strip_suffix(expected_suffix) else {
-        bail!("line with \"pixi global install \" but which does not end with {expected_suffix:?}");
+        bail!(
+            "line with \"pixi global install \" but which does not end with {}",
+            quote(expected_suffix)
+        );
     };
     let expected_prefix = "pixi global install ";
     let Some(recipe_and_version_str) = command_str.strip_prefix(expected_prefix) else {
-        bail!("left trimmed line with \"pixi global install \" but which does not start with {expected_prefix:?}");
+        bail!(
+            "left trimmed line with \"pixi global install \" but which does not start with {}",
+            quote(expected_prefix)
+        );
     };
     let recipe_and_version = RecipeAndVersion::from_str(recipe_and_version_str)?;
     let recipe_end_index = recipe_and_version_str.find('=').context("'=' is missing")?;
@@ -33,7 +40,8 @@ pub fn parse_line_with_pixi_global_install<'a>(
     let recipe = Recipe::from_str(recipe_str)?;
     if let Some(previous_recipe_and_version) = pixi_map.insert(recipe, recipe_and_version) {
         bail!(
-            "{recipe_str:?} recipe already installed in a previous line: it was {}",
+            "{} recipe already installed in a previous line: it was {}",
+            quote(recipe_str),
             previous_recipe_and_version.as_str()
         );
     }

@@ -3,6 +3,7 @@ use std::collections::BTreeMap;
 use anyhow::bail;
 
 use crate::command::{command, Command};
+use crate::common::quote;
 
 mod crate_name {
     crate::nonempty_str::newtype!(CrateName, error_msg = "empty crate name");
@@ -19,7 +20,10 @@ pub fn parse_line_with_cargo_install<'a>(
     assert!(left_trimmed_line.contains("cargo install "));
     let expected_suffix = "; \\";
     let Some(command_str) = left_trimmed_line.strip_suffix(expected_suffix) else {
-        bail!("line with \"cargo install \" but which does not end with {expected_suffix:?}");
+        bail!(
+            "line with \"cargo install \" but which does not end with {}",
+            quote(expected_suffix)
+        );
     };
     // `left_trimmed_line.contains("cargo install ")`` so `unwrap()` is OK.
     let crate_name_start_index =
@@ -31,7 +35,8 @@ pub fn parse_line_with_cargo_install<'a>(
     let command = Command::from_str(command_str).unwrap();
     if let Some(previous_command) = cargo_map.insert(crate_name, command.clone()) {
         bail!(
-            "{crate_name_str:?} crate already installed in a previous line: the command was [{}]",
+            "{} crate already installed in a previous line: the command was [{}]",
+            quote(crate_name_str),
             previous_command.format()
         );
     }

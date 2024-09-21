@@ -1,6 +1,7 @@
 mod cargo_handling;
 mod command;
 mod command_computing;
+mod common;
 mod nonempty_str;
 mod pixi_handling;
 
@@ -22,6 +23,7 @@ use clap::Parser;
 
 use command::Command;
 use command_computing::{compute_commands, parse_state_from_file_content};
+use common::quote_path;
 
 #[derive(Parser)]
 #[command(version)]
@@ -96,9 +98,13 @@ fn main() -> anyhow::Result<()> {
     }
     let data = get_input_data(current_state_file_path, target_state_file_path)?;
     let current_state = parse_state_from_file_content(&data.current_state_file_content)
-        .with_context(|| format!("failed to parse the content of {current_state_file_path:?}"))?;
+        .with_context(|| {
+            format!("failed to parse the content of {}", quote_path(current_state_file_path))
+        })?;
     let target_state = parse_state_from_file_content(&data.target_state_file_content)
-        .with_context(|| format!("failed to parse the content of {target_state_file_path:?}"))?;
+        .with_context(|| {
+            format!("failed to parse the content of {}", quote_path(target_state_file_path))
+        })?;
     let mut commands = compute_commands(&current_state, &target_state);
     commands.try_for_each(|command| print_and_execute(&command, dry_run))
 }
@@ -113,9 +119,9 @@ fn get_input_data(
     target_state_file_path: &Path,
 ) -> anyhow::Result<InputData> {
     let current_state_file_content = fs::read_to_string(current_state_file_path)
-        .with_context(|| format!("failed to read {current_state_file_path:?}"))?;
+        .with_context(|| format!("failed to read {}", quote_path(current_state_file_path)))?;
     let target_state_file_content = fs::read_to_string(target_state_file_path)
-        .with_context(|| format!("failed to read {target_state_file_path:?}"))?;
+        .with_context(|| format!("failed to read {}", quote_path(target_state_file_path)))?;
     Ok(InputData { current_state_file_content, target_state_file_content })
 }
 
