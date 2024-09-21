@@ -44,7 +44,7 @@ fmt.maketarget : rustfmt.toml $(wildcard src/*.rs) $(wildcard tests/*.rs)
 clippy.maketarget : fmt.maketarget Cargo.toml
 	cargo clippy --all-features --all-targets -- -D warnings && touch $@
 
-test.maketarget : clippy.maketarget
+test.maketarget : clippy.maketarget Cargo.lock
 	cargo test && touch $@
 
 $(debug_exe_path) : Cargo.toml Cargo.lock fmt.maketarget
