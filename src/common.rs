@@ -20,6 +20,6 @@ pub fn quote_path(arg: &Path) -> impl Display + '_ {
     // > `Debug` implementations of types provided by the standard library (`std`, `core`, `alloc`,
     // > etc.) are not stable, and may also change with future Rust versions.
     //
-    // This is why I use `format!("{}", quote(path))` instead of `format!("{path:?}")`.
+    // This is why I use `format!("{}", quote_path(path))` instead of `format!("{path:?}")`.
     json!(arg)
 }
