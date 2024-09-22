@@ -21,5 +21,5 @@ pub fn quote_path(path: &Path) -> impl Display + '_ {
     // > etc.) are not stable, and may also change with future Rust versions.
     //
     // This is why I use `format!("{}", quote_path(path))` instead of `format!("{path:?}")`.
-    json!(path)
+    json!(path.to_string_lossy())
 }
