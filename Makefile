@@ -3,22 +3,19 @@
 MAKEFLAGS += --no-builtin-rules
 MAKEFLAGS += --warn-undefined-variables
 
-debug_exe_path = target/debug/sync_install
-release_exe_path = target/release/sync_install
-
 .PHONY: debug # Debug execution
-debug : $(debug_exe_path) test.maketarget
-	$< tests/current_state_from_readme tests/target_state_from_readme
+debug : test.maketarget
+	cargo run -q -- tests/current_state_from_readme tests/target_state_from_readme
 
 #############################################
 # Other phony targets in alphabetical order #
 #############################################
 
-.PHONY: clean # Remove what is in .gitignore
+.PHONY: clean # Remove what is in `.gitignore`
 clean :
 	git clean -dXf
 
-.PHONY: edit # Edit the Makefile
+.PHONY: edit # Edit the `Makefile`
 edit :
 	@codium Makefile
 
@@ -35,8 +32,8 @@ install_rust_toolchain:
 	rustup toolchain install 1.81.0 --profile minimal --component clippy,rustfmt
 
 .PHONY: release # Release execution
-release : $(release_exe_path) test.maketarget
-	$< tests/current_state_from_readme tests/target_state_from_readme
+release : test.maketarget
+	cargo run -qr -- tests/current_state_from_readme tests/target_state_from_readme
 
 ################
 # File targets #
@@ -50,9 +47,3 @@ clippy.maketarget : fmt.maketarget Cargo.toml
 
 test.maketarget : clippy.maketarget Cargo.lock
 	cargo test && touch $@
-
-$(debug_exe_path) : Cargo.toml Cargo.lock fmt.maketarget
-	cargo build
-
-$(release_exe_path) : Cargo.toml Cargo.lock fmt.maketarget
-	cargo build --release
