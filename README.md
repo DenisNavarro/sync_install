@@ -15,7 +15,7 @@ cargo install --git https://github.com/DenisNavarro/sync_install --locked
 For example, if the content of the `current_state` file is:
 
 ```Dockerfile
-FROM docker.io/library/rust:1.78.0-slim-bookworm
+FROM docker.io/library/rust:1.81.0-slim-bookworm
 RUN set -eux; \
     cargo install cargo-cache --version 0.8.3 --locked; \
     cargo install cocogitto --version 6.1.0 --locked; \
@@ -27,7 +27,7 @@ CMD ["/bin/bash"]
 and if the content of the `target_state` file is:
 
 ```Dockerfile
-FROM docker.io/library/rust:1.78.0-slim-bookworm
+FROM docker.io/library/rust:1.81.0-slim-bookworm
 RUN set -eux; \
     cargo install cargo-cache --version 0.8.3; \
     cargo install cocogitto --version 6.1.0 --locked; \
