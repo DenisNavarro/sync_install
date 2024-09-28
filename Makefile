@@ -21,14 +21,14 @@ edit :
 
 .PHONY: help # Print each phony target with its description
 help:
-	@grep '^.PHONY: .* # ' Makefile | sed 's/\.PHONY: \(.*\) # \(.*\)/\1\t\2/' | expand -t 23
+	@grep '^.PHONY: .* # ' Makefile | sed 's/\.PHONY: \(.*\) # \(.*\)/\1\t\2/' | expand -t 24
 
 .PHONY: install_git_hooks # Install Git hooks with Cocogitto
 install_git_hooks:
 	cog install-hook --all
 
-.PHONY: install_rust_toolchain # Install the Rust toolchain used by the `pre-commit` hook
-install_rust_toolchain:
+.PHONY: install_rust_toolchains # Install the Rust toolchains used by the Git hooks
+install_rust_toolchains:
 	rustup toolchain install 1.81.0 --profile minimal --component clippy,rustfmt
 
 .PHONY: release # Release execution
