@@ -1,13 +1,13 @@
 [git_hooks.commit-msg]
 script = """#!/bin/sh
 set -e
-cog verify --file $1
+cog verify --file "$1"
 """
 
 [git_hooks.pre-commit]
 script = """#!/bin/sh
 set -e
 cargo +1.81.0 fmt --all --check
-cargo +1.81.0 clippy --workspace --all-features --all-targets -- -D warnings
-cargo +1.81.0 test --workspace
+cargo +1.81.0 clippy --all-features --all-targets --locked --workspace -- -D warnings
+cargo +1.81.0 test --locked --workspace
 """
