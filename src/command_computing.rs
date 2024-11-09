@@ -55,7 +55,7 @@ pub fn parse_state_from_file_content(file_content: &str) -> anyhow::Result<State
 pub fn compute_commands<'a, 'b>(
     current_state: &'b State<'a>,
     target_state: &'b State<'a>,
-) -> impl Iterator<Item = Command<'a>> + 'b {
+) -> impl Iterator<Item = Command<'a>> + use<'a, 'b> {
     itertools::chain![
         compute_recipe_removal_commands(&current_state.pixi_map, &target_state.pixi_map),
         compute_crate_removal_commands(&current_state.cargo_map, &target_state.cargo_map),

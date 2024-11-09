@@ -69,7 +69,7 @@ pub fn compute_recipe_install_or_update_command<'a>(
 pub fn compute_recipe_removal_commands<'a, 'b>(
     current_state_pixi_map: &'b BTreeMap<Recipe<'a>, RecipeAndVersion<'a>>,
     target_state_pixi_map: &'b BTreeMap<Recipe<'a>, RecipeAndVersion<'a>>,
-) -> impl Iterator<Item = Command<'a>> + 'b {
+) -> impl Iterator<Item = Command<'a>> + use<'a, 'b> {
     current_state_pixi_map
         .keys()
         .copied()

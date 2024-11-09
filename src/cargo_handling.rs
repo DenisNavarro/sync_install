@@ -62,7 +62,7 @@ pub fn compute_crate_install_or_update_command<'a>(
 pub fn compute_crate_removal_commands<'a, 'b>(
     current_state_cargo_map: &'b BTreeMap<CrateName<'a>, Command<'a>>,
     target_state_cargo_map: &'b BTreeMap<CrateName<'a>, Command<'a>>,
-) -> impl Iterator<Item = Command<'a>> + 'b {
+) -> impl Iterator<Item = Command<'a>> + use<'a, 'b> {
     current_state_cargo_map
         .keys()
         .copied()

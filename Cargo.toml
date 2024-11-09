@@ -2,7 +2,7 @@
 name = "sync_install"
 version = "0.2.2"
 edition = "2021"
-rust-version = "1.81.0"
+rust-version = "1.82.0"
 
 [dependencies]
 anyhow = "1"
@@ -71,4 +71,5 @@ try_err = "warn"
 unnecessary_self_imports = "warn"
 unneeded_field_pattern = "warn"
 unseparated_literal_suffix = "warn"
+unused_result_ok = "warn"
 use_debug = "warn"
