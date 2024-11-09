@@ -11,7 +11,7 @@ FROM docker.io/library/rust:1.81.0-slim-bookworm
 RUN set -eux; \
     cargo install cargo-cache --version 0.8.3 --locked; \
     # cargo install fsays --version 0.3.0 --locked; \
-    cargo install pixi --git https://github.com/prefix-dev/pixi.git --tag v0.30.0 --locked; \
+    cargo install pixi --git https://github.com/prefix-dev/pixi.git --tag v0.35.0 --locked; \
     cargo cache -r all
 
 WORKDIR /work
@@ -40,7 +40,7 @@ fn install() {
             .unwrap(),
         split_commands([
             "cargo install cargo-cache --version 0.8.3 --locked",
-            "cargo install pixi --git https://github.com/prefix-dev/pixi.git --tag v0.30.0 --locked",
+            "cargo install pixi --git https://github.com/prefix-dev/pixi.git --tag v0.35.0 --locked",
             "pixi run -e openssl-pkgconfig cargo install cargo-update --version 14.1.1 --locked",
             "pixi global install git=2.45.2",
         ]),
@@ -53,7 +53,7 @@ FROM docker.io/library/rust:1.81.0-slim-bookworm
 RUN set -eux; \
     cargo install cargo-cache --version 0.8.3; \
     # cargo install fsays --version 0.3.0 --locked; \
-    cargo install pixi --git https://github.com/prefix-dev/pixi.git --tag v0.30.0 --locked; \
+    cargo install pixi --git https://github.com/prefix-dev/pixi.git --tag v0.35.0 --locked; \
     cargo cache -r all
 
 WORKDIR /work
@@ -82,7 +82,7 @@ fn update() {
             .unwrap(),
         split_commands([
             "cargo install cargo-cache --version 0.8.3 --force",
-            "pixi global upgrade git=2.46.0",
+            "pixi global install git=2.46.0",
         ]),
     );
 }
@@ -95,7 +95,7 @@ fn remove() {
         parse_args_and_compute_commands(current_state_file_content, target_state_file_content)
             .unwrap(),
         split_commands([
-            "pixi global remove git",
+            "pixi global uninstall git",
             "cargo uninstall cargo-cache",
             "cargo uninstall cargo-update",
             "cargo uninstall pixi",

@@ -58,7 +58,7 @@ pub fn compute_recipe_install_or_update_command<'a>(
             None
         } else {
             let recipe_and_version = target_state_recipe_and_version.as_str();
-            Some(command!["pixi", "global", "upgrade", recipe_and_version].unwrap())
+            Some(command!["pixi", "global", "install", recipe_and_version].unwrap())
         }
     } else {
         let recipe_and_version = target_state_recipe_and_version.as_str();
@@ -74,5 +74,5 @@ pub fn compute_recipe_removal_commands<'a, 'b>(
         .keys()
         .copied()
         .filter(|recipe| !target_state_pixi_map.contains_key(recipe))
-        .map(|recipe| command!["pixi", "global", "remove", recipe.as_str()].unwrap())
+        .map(|recipe| command!["pixi", "global", "uninstall", recipe.as_str()].unwrap())
 }
