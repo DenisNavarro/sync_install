@@ -1,6 +1,6 @@
 use std::borrow::Cow;
 
-use anyhow::Context;
+use anyhow::Context as _;
 
 use crate::command::Command;
 use crate::command_computing::{compute_commands, parse_state_from_file_content};

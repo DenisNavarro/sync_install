@@ -4,8 +4,8 @@
 use std::borrow::Cow;
 use std::fmt;
 
-use anyhow::{ensure, Context};
-use itertools::Itertools; // format
+use anyhow::{ensure, Context as _};
+use itertools::Itertools as _; // format
 
 #[derive(Clone, PartialEq, Eq)]
 pub struct Command<'a>(Vec<Cow<'a, str>>);

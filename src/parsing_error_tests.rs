@@ -1,6 +1,6 @@
 use std::fmt;
 
-use anyhow::{ensure, Context};
+use anyhow::{ensure, Context as _};
 
 use crate::command_computing::parse_state_from_file_content;
 

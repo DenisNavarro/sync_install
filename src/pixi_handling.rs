@@ -1,6 +1,6 @@
 use std::collections::BTreeMap;
 
-use anyhow::{bail, Context};
+use anyhow::{bail, Context as _};
 
 use crate::command::{command, Command};
 use crate::common::quote;

@@ -15,10 +15,10 @@ mod happy_path_tests;
 mod parsing_error_tests;
 
 use std::fs;
-use std::io::Write;
+use std::io::Write as _;
 use std::path::{Path, PathBuf};
 
-use anyhow::{bail, Context};
+use anyhow::{bail, Context as _};
 use clap::Parser;
 
 use command::Command;

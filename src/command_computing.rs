@@ -1,6 +1,6 @@
 use std::collections::BTreeMap;
 
-use anyhow::Context;
+use anyhow::Context as _;
 
 use crate::cargo_handling::{
     compute_crate_install_or_update_command, compute_crate_removal_commands,

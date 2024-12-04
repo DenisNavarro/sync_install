@@ -1,4 +1,4 @@
-use anyhow::{ensure, Context};
+use anyhow::{ensure, Context as _};
 use camino::Utf8PathBuf;
 use cargo_metadata::MetadataCommand;
 
