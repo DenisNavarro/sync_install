@@ -37,7 +37,7 @@ pub fn parse_line_with_cargo_install<'a>(
         bail!(
             "{} crate already installed in a previous line: the command was [{}]",
             quote(crate_name_str),
-            previous_command.format()
+            previous_command.display()
         );
     }
     Ok(CargoInstall(crate_name, command))

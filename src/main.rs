@@ -126,7 +126,7 @@ fn get_input_data(
 }
 
 fn print_and_execute(command: &Command, dry_run: bool) -> anyhow::Result<()> {
-    my_writeln!("---> [{}]", command.format())?;
+    my_writeln!("---> [{}]", command.display())?;
     if !dry_run {
         execute(command)?;
     }
@@ -145,5 +145,5 @@ fn execute(command: &Command) -> anyhow::Result<()> {
             }
             Ok(())
         })
-        .with_context(|| format!("failed to run [{}]", command.format()))
+        .with_context(|| format!("failed to run [{}]", command.display()))
 }
