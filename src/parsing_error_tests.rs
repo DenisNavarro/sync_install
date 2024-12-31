@@ -10,7 +10,7 @@ fn cargo_install_without_expected_suffix() -> anyhow::Result<()> {
         "RUN cargo install fsays --version 0.3.0 --locked",
         [
             "failed to parse line 1: ",
-            r#"line with "cargo install " but which does not end with "; \\""#,
+            r#"line with "cargo install " but which does not end with "; \""#,
         ],
     )
 }
@@ -46,7 +46,7 @@ fn pixi_global_install_without_expected_suffix() -> anyhow::Result<()> {
         "RUN pixi global install git=2.46.0",
         [
             "failed to parse line 1: ",
-            r#"line with "pixi global install " but which does not end with "; \\""#,
+            r#"line with "pixi global install " but which does not end with "; \""#,
         ],
     )
 }
