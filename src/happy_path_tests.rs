@@ -96,9 +96,9 @@ fn remove() {
             .unwrap(),
         split_commands([
             "pixi global uninstall git",
-            "cargo uninstall cargo-cache",
             "cargo uninstall cargo-update",
             "cargo uninstall pixi",
+            "cargo uninstall cargo-cache",
         ]),
     );
 }

@@ -48,6 +48,15 @@ pub fn parse_line_with_pixi_global_install<'a>(
     Ok(PixiGlobalInstall(recipe, recipe_and_version))
 }
 
+pub fn compute_recipe_removal_command<'a>(
+    target_state_pixi_map: &BTreeMap<Recipe<'a>, RecipeAndVersion<'a>>,
+    current_state_action: PixiGlobalInstall<'a>,
+) -> Option<Command<'a>> {
+    let recipe = &current_state_action.0;
+    (!target_state_pixi_map.contains_key(recipe))
+        .then(|| command!["pixi", "global", "uninstall", recipe.as_str()].unwrap())
+}
+
 pub fn compute_recipe_install_or_update_command<'a>(
     current_state_pixi_map: &BTreeMap<Recipe<'a>, RecipeAndVersion<'a>>,
     target_state_action: PixiGlobalInstall<'a>,
@@ -64,15 +73,4 @@ pub fn compute_recipe_install_or_update_command<'a>(
         let recipe_and_version = target_state_recipe_and_version.as_str();
         Some(command!["pixi", "global", "install", recipe_and_version].unwrap())
     }
-}
-
-pub fn compute_recipe_removal_commands<'a, 'b>(
-    current_state_pixi_map: &'b BTreeMap<Recipe<'a>, RecipeAndVersion<'a>>,
-    target_state_pixi_map: &'b BTreeMap<Recipe<'a>, RecipeAndVersion<'a>>,
-) -> impl Iterator<Item = Command<'a>> + use<'a, 'b> {
-    current_state_pixi_map
-        .keys()
-        .copied()
-        .filter(|recipe| !target_state_pixi_map.contains_key(recipe))
-        .map(|recipe| command!["pixi", "global", "uninstall", recipe.as_str()].unwrap())
 }

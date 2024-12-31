@@ -3,13 +3,13 @@ use std::collections::BTreeMap;
 use anyhow::Context as _;
 
 use crate::cargo_handling::{
-    compute_crate_install_or_update_command, compute_crate_removal_commands,
+    compute_crate_install_or_update_command, compute_crate_removal_command,
     parse_line_with_cargo_install, CargoInstall, CrateName,
 };
 use crate::command::Command;
 use crate::common::quote;
 use crate::pixi_handling::{
-    compute_recipe_install_or_update_command, compute_recipe_removal_commands,
+    compute_recipe_install_or_update_command, compute_recipe_removal_command,
     parse_line_with_pixi_global_install, PixiGlobalInstall, Recipe, RecipeAndVersion,
 };
 
@@ -57,8 +57,12 @@ pub fn compute_commands<'a, 'b>(
     target_state: &'b State<'a>,
 ) -> impl Iterator<Item = Command<'a>> + use<'a, 'b> {
     itertools::chain![
-        compute_recipe_removal_commands(&current_state.pixi_map, &target_state.pixi_map),
-        compute_crate_removal_commands(&current_state.cargo_map, &target_state.cargo_map),
+        current_state.ordered_actions.iter().rev().filter_map(|action| match action {
+            Action::CargoInstall(action) =>
+                compute_crate_removal_command(&target_state.cargo_map, action),
+            Action::PixiGlobalInstall(action) =>
+                compute_recipe_removal_command(&target_state.pixi_map, *action),
+        }),
         target_state.ordered_actions.iter().filter_map(|action| match action {
             Action::CargoInstall(action) =>
                 compute_crate_install_or_update_command(&current_state.cargo_map, action),

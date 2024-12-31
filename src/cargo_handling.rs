@@ -43,6 +43,15 @@ pub fn parse_line_with_cargo_install<'a>(
     Ok(CargoInstall(crate_name, command))
 }
 
+pub fn compute_crate_removal_command<'a>(
+    target_state_cargo_map: &BTreeMap<CrateName<'a>, Command<'a>>,
+    current_state_action: &CargoInstall<'a>,
+) -> Option<Command<'a>> {
+    let crate_name = &current_state_action.0;
+    (!target_state_cargo_map.contains_key(crate_name))
+        .then(|| command!["cargo", "uninstall", crate_name.as_str()].unwrap())
+}
+
 pub fn compute_crate_install_or_update_command<'a>(
     current_state_cargo_map: &BTreeMap<CrateName<'a>, Command<'a>>,
     target_state_action: &CargoInstall<'a>,
@@ -57,15 +66,4 @@ pub fn compute_crate_install_or_update_command<'a>(
     } else {
         Some(target_state_command.clone())
     }
-}
-
-pub fn compute_crate_removal_commands<'a, 'b>(
-    current_state_cargo_map: &'b BTreeMap<CrateName<'a>, Command<'a>>,
-    target_state_cargo_map: &'b BTreeMap<CrateName<'a>, Command<'a>>,
-) -> impl Iterator<Item = Command<'a>> + use<'a, 'b> {
-    current_state_cargo_map
-        .keys()
-        .copied()
-        .filter(|crate_name| !target_state_cargo_map.contains_key(crate_name))
-        .map(|crate_name| command!["cargo", "uninstall", crate_name.as_str()].unwrap())
 }
