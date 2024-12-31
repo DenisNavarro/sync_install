@@ -24,8 +24,7 @@ impl<'a> Command<'a> {
         // I don't need `shlex::split` for my use case.
         Self::from_vec(program_and_args.split(' ').map(Into::into).collect())
     }
-    #[allow(clippy::allow_attributes)]
-    #[allow(dead_code)] // False positive: called in `happy_path_tests.rs`
+    #[cfg(test)]
     #[inline]
     pub fn into_vec(self) -> Vec<Cow<'a, str>> {
         self.0
