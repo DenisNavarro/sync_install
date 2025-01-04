@@ -58,11 +58,8 @@ pub fn compute_crate_install_or_update_command<'a>(
 ) -> Option<Command<'a>> {
     let CargoInstall(crate_name, target_state_command) = target_state_action;
     if let Some(current_state_command) = current_state_cargo_map.get(crate_name) {
-        if current_state_command == target_state_command {
-            None
-        } else {
-            Some(target_state_command.concat_args(std::iter::once("--force".into())))
-        }
+        (current_state_command != target_state_command)
+            .then(|| target_state_command.concat_args(std::iter::once("--force".into())))
     } else {
         Some(target_state_command.clone())
     }

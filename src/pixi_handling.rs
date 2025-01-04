@@ -62,15 +62,13 @@ pub fn compute_recipe_install_or_update_command<'a>(
     target_state_action: PixiGlobalInstall<'a>,
 ) -> Option<Command<'a>> {
     let PixiGlobalInstall(recipe, target_state_recipe_and_version) = target_state_action;
-    if let Some(current_state_recipe_and_version) = current_state_pixi_map.get(&recipe) {
-        if current_state_recipe_and_version == &target_state_recipe_and_version {
-            None
-        } else {
+    current_state_pixi_map
+        .get(&recipe)
+        .is_none_or(|current_state_recipe_and_version| {
+            current_state_recipe_and_version != &target_state_recipe_and_version
+        })
+        .then(|| {
             let recipe_and_version = target_state_recipe_and_version.as_str();
-            Some(command!["pixi", "global", "install", recipe_and_version].unwrap())
-        }
-    } else {
-        let recipe_and_version = target_state_recipe_and_version.as_str();
-        Some(command!["pixi", "global", "install", recipe_and_version].unwrap())
-    }
+            command!["pixi", "global", "install", recipe_and_version].unwrap()
+        })
 }
