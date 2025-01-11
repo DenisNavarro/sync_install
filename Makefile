@@ -29,6 +29,7 @@ install_git_hooks:
 
 .PHONY: install_rust_toolchains # Install the Rust toolchains used by the Git hooks
 install_rust_toolchains:
+	rustup toolchain install 1.82.0 --profile minimal
 	rustup toolchain install 1.83.0 --profile minimal --component clippy,rustfmt
 
 .PHONY: release # Release execution
