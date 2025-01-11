@@ -25,7 +25,7 @@ help:
 
 .PHONY: install_git_hooks # Install Git hooks with Cocogitto
 install_git_hooks:
-	cog install-hook --all
+	cog install-hook --all --overwrite
 
 .PHONY: install_rust_toolchains # Install the Rust toolchains used by the Git hooks
 install_rust_toolchains:
