@@ -7,7 +7,6 @@ cog verify --file "$1"
 [git_hooks.pre-commit]
 script = """#!/bin/sh
 set -e
-cargo +1.82.0 test --locked --workspace
 cargo +1.85.0 fmt --all --check
 cargo +1.85.0 clippy --all-features --all-targets --locked --workspace -- -D warnings
 cargo +1.85.0 test --locked --workspace

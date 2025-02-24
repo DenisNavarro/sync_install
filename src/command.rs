@@ -4,7 +4,7 @@
 use std::borrow::Cow;
 use std::fmt;
 
-use anyhow::{ensure, Context as _};
+use anyhow::{Context as _, ensure};
 use itertools::Itertools as _; // format
 
 #[derive(Clone, PartialEq, Eq)]

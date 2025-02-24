@@ -3,14 +3,14 @@ use std::collections::BTreeMap;
 use anyhow::Context as _;
 
 use crate::cargo_handling::{
-    compute_crate_install_or_update_command, compute_crate_removal_command,
-    parse_line_with_cargo_install, CargoInstall, CrateName,
+    CargoInstall, CrateName, compute_crate_install_or_update_command,
+    compute_crate_removal_command, parse_line_with_cargo_install,
 };
 use crate::command::Command;
 use crate::common::quote;
 use crate::pixi_handling::{
-    compute_recipe_install_or_update_command, compute_recipe_removal_command,
-    parse_line_with_pixi_global_install, PixiGlobalInstall, Recipe, RecipeAndVersion,
+    PixiGlobalInstall, Recipe, RecipeAndVersion, compute_recipe_install_or_update_command,
+    compute_recipe_removal_command, parse_line_with_pixi_global_install,
 };
 
 pub struct State<'a> {

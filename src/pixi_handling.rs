@@ -1,8 +1,8 @@
 use std::collections::BTreeMap;
 
-use anyhow::{bail, Context as _};
+use anyhow::{Context as _, bail};
 
-use crate::command::{command, Command};
+use crate::command::{Command, command};
 use crate::common::quote;
 
 mod nonempty_str_types {

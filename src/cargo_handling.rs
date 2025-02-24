@@ -2,7 +2,7 @@ use std::collections::BTreeMap;
 
 use anyhow::bail;
 
-use crate::command::{command, Command};
+use crate::command::{Command, command};
 use crate::common::quote;
 
 mod crate_name {
