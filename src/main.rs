@@ -105,8 +105,8 @@ fn main() -> anyhow::Result<()> {
         .with_context(|| {
             format!("failed to parse the content of {}", quote_path(target_state_file_path))
         })?;
-    let mut commands = compute_commands(&current_state, &target_state);
-    commands.try_for_each(|command| print_and_execute(&command, dry_run))
+    compute_commands(&current_state, &target_state)
+        .try_for_each(|command| print_and_execute(&command, dry_run))
 }
 
 struct InputData {

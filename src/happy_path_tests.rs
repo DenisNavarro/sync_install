@@ -123,8 +123,7 @@ fn parse_args_and_compute_commands(
         .context("failed to parse the current state file content")?;
     let target_state = parse_state_from_file_content(target_state_file_content)
         .context("failed to parse the target state file content")?;
-    let commands = compute_commands(&current_state, &target_state).map(Command::into_vec).collect();
-    Ok(commands)
+    Ok(compute_commands(&current_state, &target_state).map(Command::into_vec).collect())
 }
 
 fn split_commands<const N: usize>(commands: [&'static str; N]) -> Vec<Vec<&'static str>> {
