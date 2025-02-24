@@ -55,7 +55,7 @@ pub fn parse_state_from_file_content(file_content: &str) -> anyhow::Result<State
 pub fn compute_commands<'a, 'b>(
     current_state: &'b State<'a>,
     target_state: &'b State<'a>,
-) -> impl Iterator<Item = Command<'a>> + use<'a, 'b> {
+) -> impl Iterator<Item = Command<'a>> {
     itertools::chain![
         current_state.ordered_actions.iter().rev().filter_map(|action| match action {
             Action::CargoInstall(action) =>

@@ -36,7 +36,7 @@ impl<'a> Command<'a> {
     pub fn concat_args(&self, args: impl IntoIterator<Item = Cow<'a, str>>) -> Self {
         Self(self.0.iter().cloned().chain(args).collect())
     }
-    pub fn display(&self) -> impl fmt::Display + use<'_> {
+    pub fn display(&self) -> impl fmt::Display {
         // I don't need `shlex::try_join` for my use case.
         self.0.iter().format(" ")
     }
