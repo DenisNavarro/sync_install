@@ -15,10 +15,10 @@ cargo install --git https://github.com/DenisNavarro/sync_install --tag 0.6.0 --l
 For example, if the content of the `current_state` file is:
 
 ```Dockerfile
-FROM docker.io/library/rust:1.81.0-slim-bookworm
+FROM docker.io/library/rust:1.85.0-slim-bookworm
 RUN set -eux; \
     cargo install cargo-cache --version 0.8.3 --locked; \
-    cargo install cocogitto --version 6.1.0 --locked; \
+    cargo install cocogitto --version 6.2.0 --locked; \
     cargo install fsays --version 0.3.0 --locked; \
     cargo cache -r all
 CMD ["/bin/bash"]
@@ -27,11 +27,11 @@ CMD ["/bin/bash"]
 and if the content of the `target_state` file is:
 
 ```Dockerfile
-FROM docker.io/library/rust:1.81.0-slim-bookworm
+FROM docker.io/library/rust:1.85.0-slim-bookworm
 RUN set -eux; \
     cargo install cargo-cache --version 0.8.3; \
-    cargo install cocogitto --version 6.1.0 --locked; \
-    cargo install pixi --git https://github.com/prefix-dev/pixi.git --tag v0.35.0 --locked; \
+    cargo install cocogitto --version 6.2.0 --locked; \
+    cargo install pixi --git https://github.com/prefix-dev/pixi.git --tag v0.41.4 --locked; \
     cargo cache -r all
 CMD ["/bin/bash"]
 ```
@@ -42,7 +42,7 @@ then the output of `sync_install current_state target_state` will be:
 This is a dry run. Add the --go option to execute the below command(s).
 ---> [cargo uninstall fsays]
 ---> [cargo install cargo-cache --version 0.8.3 --force]
----> [cargo install pixi --git https://github.com/prefix-dev/pixi.git --tag v0.35.0 --locked]
+---> [cargo install pixi --git https://github.com/prefix-dev/pixi.git --tag v0.41.4 --locked]
 ```
 
 Warning: This program is limited to a few use cases of its author and the
