@@ -1,5 +1,3 @@
-use std::borrow::Cow;
-
 use anyhow::Context as _;
 
 use crate::command::Command;
@@ -107,18 +105,18 @@ fn remove() {
 fn no_change() {
     assert_eq!(
         parse_args_and_compute_commands(FILE_CONTENT_1, FILE_CONTENT_1).unwrap(),
-        Vec::<Vec<Cow<'static, str>>>::new()
+        Vec::<Vec<&'static str>>::new()
     );
     assert_eq!(
         parse_args_and_compute_commands(FILE_CONTENT_2, FILE_CONTENT_2).unwrap(),
-        Vec::<Vec<Cow<'static, str>>>::new()
+        Vec::<Vec<&'static str>>::new()
     );
 }
 
 fn parse_args_and_compute_commands(
     current_state_file_content: &'static str,
     target_state_file_content: &'static str,
-) -> anyhow::Result<Vec<Vec<Cow<'static, str>>>> {
+) -> anyhow::Result<Vec<Vec<&'static str>>> {
     let current_state = parse_state_from_file_content(current_state_file_content)
         .context("failed to parse the current state file content")?;
     let target_state = parse_state_from_file_content(target_state_file_content)

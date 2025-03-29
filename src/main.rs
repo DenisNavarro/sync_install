@@ -135,8 +135,8 @@ fn print_and_execute(command: &Command, dry_run: bool) -> anyhow::Result<()> {
 
 fn execute(command: &Command) -> anyhow::Result<()> {
     let (program, args) = command.split_program_and_args();
-    std::process::Command::new(program.as_ref())
-        .args(args.iter().map(AsRef::as_ref))
+    std::process::Command::new(program)
+        .args(args)
         .status()
         .context("failed to execute process")
         .and_then(|status| {
