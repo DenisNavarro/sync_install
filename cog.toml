@@ -11,4 +11,8 @@ cargo +1.85.0 test --locked --workspace
 cargo +1.85.1 fmt --all --check
 cargo +1.85.1 clippy --all-features --all-targets --locked --workspace -- -D warnings
 cargo +1.85.1 test --locked --workspace
+cd dockerfiles
+podman build -f current_state_from_readme -t sync_install_current_state_from_readme
+podman build -f target_state_from_readme -t sync_install_target_state_from_readme
+podman image prune -f
 """
