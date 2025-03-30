@@ -14,8 +14,8 @@ fn example_from_the_cli_help_and_the_readme() -> anyhow::Result<()> {
     let cargo_target_dir =
         get_cargo_target_dir().context("failed to get cargo target directory")?;
     let output = std::process::Command::new(cargo_target_dir.join("debug/sync_install"))
-        .arg("tests/current_state_from_readme")
-        .arg("tests/target_state_from_readme")
+        .arg("dockerfiles/current_state_from_readme")
+        .arg("dockerfiles/target_state_from_readme")
         .output()
         .context("failed to execute process")?;
     let status = output.status;
