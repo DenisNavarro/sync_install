@@ -3,31 +3,8 @@ use anyhow::Context as _;
 use crate::command::Command;
 use crate::command_computing::{compute_commands, parse_state_from_file_content};
 
-const FILE_CONTENT_1: &str = r#"
-FROM docker.io/library/rust:1.85.0-slim-bookworm
-
-RUN set -eux; \
-    cargo install cargo-cache --version 0.8.3 --locked; \
-    # cargo install fsays --version 0.3.0 --locked; \
-    cargo install pixi --git https://github.com/prefix-dev/pixi.git --tag v0.41.4 --locked; \
-    cargo cache -r all
-
-WORKDIR /work
-COPY pixi.toml pixi.lock /work/
-
-RUN set -eux; \
-    pixi run -e openssl-pkgconfig cargo install cargo-update --version 16.1.0 --locked; \
-    cargo cache -r all
-
-RUN set -eux; \
-    pixi global install git=2.46.0; \
-    pixi global list
-
-ENV HOME="/root"
-ENV PATH="$PATH:$HOME/.pixi/bin"
-
-CMD ["/bin/bash"]
-"#;
+const FILE_CONTENT_1: &str = include_str!("../dockerfiles/tested_example_1");
+const FILE_CONTENT_2: &str = include_str!("../dockerfiles/tested_example_2");
 
 #[test]
 fn install() {
@@ -44,32 +21,6 @@ fn install() {
         ]),
     );
 }
-
-const FILE_CONTENT_2: &str = r#"
-FROM docker.io/library/rust:1.85.0-slim-bookworm
-
-RUN set -eux; \
-    cargo install cargo-cache --version 0.8.3; \
-    # cargo install fsays --version 0.3.0 --locked; \
-    cargo install pixi --git https://github.com/prefix-dev/pixi.git --tag v0.41.4 --locked; \
-    cargo cache -r all
-
-WORKDIR /work
-COPY pixi.toml pixi.lock /work/
-
-RUN set -eux; \
-    pixi run -e openssl-pkgconfig cargo install cargo-update --version 16.1.0 --locked; \
-    cargo cache -r all
-
-RUN set -eux; \
-    pixi global install git=2.48.1; \
-    pixi global list
-
-ENV HOME="/root"
-ENV PATH="$PATH:$HOME/.pixi/bin"
-
-CMD ["/bin/bash"]
-"#;
 
 #[test]
 fn update() {

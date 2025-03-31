@@ -1,0 +1,13 @@
+[project]
+name = "test_sync_install"
+channels = ["conda-forge"]
+platforms = ["linux-64"]
+
+[feature.openssl.dependencies]
+openssl = "*"
+
+[feature.pkgconfig.dependencies]
+pkg-config = "*"
+
+[environments]
+openssl-pkgconfig = {features = ["openssl", "pkgconfig"]}
