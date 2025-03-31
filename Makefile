@@ -5,7 +5,7 @@ MAKEFLAGS += --warn-undefined-variables
 
 .PHONY: debug # Debug execution
 debug : test.maketarget
-	cargo run -q -- tests/current_state_from_readme tests/target_state_from_readme
+	cargo run -q -- dockerfiles/current_state_from_readme dockerfiles/target_state_from_readme
 
 #############################################
 # Other phony targets in alphabetical order #
@@ -34,7 +34,7 @@ install_rust_toolchains:
 
 .PHONY: release # Release execution
 release : test.maketarget
-	cargo run -qr -- tests/current_state_from_readme tests/target_state_from_readme
+	cargo run -qr -- dockerfiles/current_state_from_readme dockerfiles/target_state_from_readme
 
 ################
 # File targets #
