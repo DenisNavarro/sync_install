@@ -15,8 +15,8 @@ fn install() {
             .unwrap(),
         split_commands([
             "cargo install cargo-cache --version 0.8.3 --locked",
-            "cargo install pixi --git https://github.com/prefix-dev/pixi.git --tag v0.41.4 --locked",
-            "pixi run -e openssl-pkgconfig cargo install cargo-update --version 16.1.0 --locked",
+            "cargo install pixi --git https://github.com/prefix-dev/pixi.git --tag v0.44.0 --locked",
+            "pixi run -e openssl-pkgconfig cargo install cargo-update --version 16.3.0 --locked",
             "pixi global install git=2.46.0",
         ]),
     );
@@ -31,7 +31,7 @@ fn update() {
             .unwrap(),
         split_commands([
             "cargo install cargo-cache --version 0.8.3 --force",
-            "pixi global install git=2.48.1",
+            "pixi global install git=2.49.0",
         ]),
     );
 }

@@ -43,7 +43,7 @@ fn same_crate_in_a_previous_line() -> anyhow::Result<()> {
 #[test]
 fn pixi_global_install_without_expected_suffix() -> anyhow::Result<()> {
     parse_first_arg_and_check_error_contains(
-        "RUN pixi global install git=2.48.1",
+        "RUN pixi global install git=2.49.0",
         [
             "failed to parse line 1: ",
             r#"line with "pixi global install " but which does not end with "; \""#,
@@ -55,7 +55,7 @@ fn pixi_global_install_without_expected_suffix() -> anyhow::Result<()> {
 fn pixi_global_install_without_expected_prefix() -> anyhow::Result<()> {
     parse_first_arg_and_check_error_contains(
         r"RUN set -eux; \
-            echo pixi global install git=2.48.1; \
+            echo pixi global install git=2.49.0; \
             pixi global list",
         [
             "failed to parse line 2: ",
@@ -89,7 +89,7 @@ fn pixi_global_install_without_equal() -> anyhow::Result<()> {
 fn pixi_global_install_with_empty_recipe() -> anyhow::Result<()> {
     parse_first_arg_and_check_error_contains(
         r"RUN set -eux; \
-            pixi global install =2.48.1; \
+            pixi global install =2.49.0; \
             pixi global list",
         ["failed to parse line 2: ", "empty recipe"],
     )
@@ -100,7 +100,7 @@ fn same_recipe_in_a_previous_line() -> anyhow::Result<()> {
     parse_first_arg_and_check_error_contains(
         r"RUN set -eux; \
             pixi global install git=2.46.0; \
-            pixi global install git=2.48.1; \
+            pixi global install git=2.49.0; \
             pixi global list",
         [
             "failed to parse line 3: ",

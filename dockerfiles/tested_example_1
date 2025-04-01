@@ -1,16 +1,16 @@
-FROM docker.io/library/rust:1.85.0-slim-bookworm
+FROM docker.io/library/rust:1.85.1-slim-bookworm
 
 RUN set -eux; \
     cargo install cargo-cache --version 0.8.3 --locked; \
     # cargo install fsays --version 0.3.0 --locked; \
-    cargo install pixi --git https://github.com/prefix-dev/pixi.git --tag v0.41.4 --locked; \
+    cargo install pixi --git https://github.com/prefix-dev/pixi.git --tag v0.44.0 --locked; \
     cargo cache -r all
 
 WORKDIR /work
 COPY pixi.toml pixi.lock /work/
 
 RUN set -eux; \
-    pixi run -e openssl-pkgconfig cargo install cargo-update --version 16.1.0 --locked; \
+    pixi run -e openssl-pkgconfig cargo install cargo-update --version 16.3.0 --locked; \
     cargo cache -r all
 
 RUN set -eux; \
