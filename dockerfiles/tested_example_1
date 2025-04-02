@@ -22,6 +22,6 @@ ENV PATH="$PATH:$HOME/.pixi/bin"
 
 RUN set -eux; \
     git config set --global init.defaultBranch master; \
-    git --version
+    cat "$HOME/.gitconfig"
 
 CMD ["/bin/bash"]

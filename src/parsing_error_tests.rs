@@ -123,9 +123,9 @@ fn git_config_set_global_without_expected_suffix() -> anyhow::Result<()> {
 #[test]
 fn git_config_set_global_without_expected_prefix() -> anyhow::Result<()> {
     parse_first_arg_and_check_error_contains(
-        r"RUN set -eux; \
+        r#"RUN set -eux; \
             echo git config set --global init.defaultBranch main; \
-            git --version",
+            cat "$HOME/.gitconfig""#,
         [
             "failed to parse line 2: ",
             r#"left trimmed line with "git config set --global " but which "#,
@@ -137,9 +137,9 @@ fn git_config_set_global_without_expected_prefix() -> anyhow::Result<()> {
 #[test]
 fn git_config_set_global_without_value() -> anyhow::Result<()> {
     parse_first_arg_and_check_error_contains(
-        r"RUN set -eux; \
+        r#"RUN set -eux; \
             git config set --global init.defaultBranch; \
-            git --version",
+            cat "$HOME/.gitconfig""#,
         ["failed to parse line 2: ", r#""init.defaultBranch" git global option without value"#],
     )
 }
@@ -147,9 +147,9 @@ fn git_config_set_global_without_value() -> anyhow::Result<()> {
 #[test]
 fn git_config_set_global_with_empty_option() -> anyhow::Result<()> {
     parse_first_arg_and_check_error_contains(
-        r"RUN set -eux; \
+        r#"RUN set -eux; \
             git config set --global  main; \
-            git --version",
+            cat "$HOME/.gitconfig""#,
         ["failed to parse line 2: ", "empty option"],
     )
 }
@@ -157,9 +157,9 @@ fn git_config_set_global_with_empty_option() -> anyhow::Result<()> {
 #[test]
 fn git_config_set_global_with_empty_value() -> anyhow::Result<()> {
     parse_first_arg_and_check_error_contains(
-        r"RUN set -eux; \
+        r#"RUN set -eux; \
             git config set --global init.defaultBranch ; \
-            git --version",
+            cat "$HOME/.gitconfig""#,
         ["failed to parse line 2: ", "empty value"],
     )
 }
@@ -167,10 +167,10 @@ fn git_config_set_global_with_empty_value() -> anyhow::Result<()> {
 #[test]
 fn same_git_global_option_in_a_previous_line() -> anyhow::Result<()> {
     parse_first_arg_and_check_error_contains(
-        r"RUN set -eux; \
+        r#"RUN set -eux; \
             git config set --global init.defaultBranch master; \
             git config set --global init.defaultBranch main; \
-            git --version",
+            cat "$HOME/.gitconfig""#,
         [
             "failed to parse line 3: ",
             r#""init.defaultBranch" git global option already set in a previous line: "#,
