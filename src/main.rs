@@ -2,6 +2,7 @@ mod cargo_handling;
 mod command;
 mod command_computing;
 mod common;
+mod git_handling;
 mod nonempty_str;
 mod pixi_handling;
 

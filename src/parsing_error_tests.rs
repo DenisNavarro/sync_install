@@ -109,6 +109,76 @@ fn same_recipe_in_a_previous_line() -> anyhow::Result<()> {
     )
 }
 
+#[test]
+fn git_config_set_global_without_expected_suffix() -> anyhow::Result<()> {
+    parse_first_arg_and_check_error_contains(
+        "RUN git config set --global init.defaultBranch main",
+        [
+            "failed to parse line 1: ",
+            r#"line with "git config set --global " but which does not end with "; \""#,
+        ],
+    )
+}
+
+#[test]
+fn git_config_set_global_without_expected_prefix() -> anyhow::Result<()> {
+    parse_first_arg_and_check_error_contains(
+        r"RUN set -eux; \
+            echo git config set --global init.defaultBranch main; \
+            git --version",
+        [
+            "failed to parse line 2: ",
+            r#"left trimmed line with "git config set --global " but which "#,
+            r#"does not start with "git config set --global ""#,
+        ],
+    )
+}
+
+#[test]
+fn git_config_set_global_without_value() -> anyhow::Result<()> {
+    parse_first_arg_and_check_error_contains(
+        r"RUN set -eux; \
+            git config set --global init.defaultBranch; \
+            git --version",
+        ["failed to parse line 2: ", r#""init.defaultBranch" git global option without value"#],
+    )
+}
+
+#[test]
+fn git_config_set_global_with_empty_option() -> anyhow::Result<()> {
+    parse_first_arg_and_check_error_contains(
+        r"RUN set -eux; \
+            git config set --global  main; \
+            git --version",
+        ["failed to parse line 2: ", "empty option"],
+    )
+}
+
+#[test]
+fn git_config_set_global_with_empty_value() -> anyhow::Result<()> {
+    parse_first_arg_and_check_error_contains(
+        r"RUN set -eux; \
+            git config set --global init.defaultBranch ; \
+            git --version",
+        ["failed to parse line 2: ", "empty value"],
+    )
+}
+
+#[test]
+fn same_git_global_option_in_a_previous_line() -> anyhow::Result<()> {
+    parse_first_arg_and_check_error_contains(
+        r"RUN set -eux; \
+            git config set --global init.defaultBranch master; \
+            git config set --global init.defaultBranch main; \
+            git --version",
+        [
+            "failed to parse line 3: ",
+            r#""init.defaultBranch" git global option already set in a previous line: "#,
+            r#"the value was "master""#,
+        ],
+    )
+}
+
 fn parse_first_arg_and_check_error_contains<const N: usize>(
     file_content: &'static str,
     texts: [&'static str; N],

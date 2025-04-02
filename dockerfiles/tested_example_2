@@ -20,4 +20,8 @@ RUN set -eux; \
 ENV HOME="/root"
 ENV PATH="$PATH:$HOME/.pixi/bin"
 
+RUN set -eux; \
+    git config set --global init.defaultBranch main; \
+    git --version
+
 CMD ["/bin/bash"]

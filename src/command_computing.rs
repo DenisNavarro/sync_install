@@ -8,6 +8,10 @@ use crate::cargo_handling::{
 };
 use crate::command::Command;
 use crate::common::quote;
+use crate::git_handling::{
+    GitConfigOption, GitConfigSetGlobal, GitConfigValue, compute_git_global_config_removal_command,
+    compute_git_global_config_set_or_update_command, parse_line_with_git_config_set_global,
+};
 use crate::pixi_handling::{
     PixiGlobalInstall, Recipe, RecipeAndVersion, compute_recipe_install_or_update_command,
     compute_recipe_removal_command, parse_line_with_pixi_global_install,
@@ -17,17 +21,20 @@ pub struct State<'a> {
     ordered_actions: Vec<Action<'a>>,
     cargo_map: BTreeMap<CrateName<'a>, Command<'a>>,
     pixi_map: BTreeMap<Recipe<'a>, RecipeAndVersion<'a>>,
+    git_map: BTreeMap<GitConfigOption<'a>, GitConfigValue<'a>>,
 }
 
 enum Action<'a> {
     CargoInstall(CargoInstall<'a>),
     PixiGlobalInstall(PixiGlobalInstall<'a>),
+    GitConfigSetGlobal(GitConfigSetGlobal<'a>),
 }
 
 pub fn parse_state_from_file_content(file_content: &str) -> anyhow::Result<State> {
     let mut ordered_actions = Vec::new();
     let mut cargo_map = BTreeMap::new();
     let mut pixi_map = BTreeMap::new();
+    let mut git_map = BTreeMap::new();
     for (index, line) in file_content.lines().enumerate() {
         let line_number = index + 1;
         let left_trimmed_line = line.trim_start();
@@ -41,12 +48,16 @@ pub fn parse_state_from_file_content(file_content: &str) -> anyhow::Result<State
             } else if left_trimmed_line.contains("pixi global install ") {
                 let action = parse_line_with_pixi_global_install(left_trimmed_line, &mut pixi_map)?;
                 ordered_actions.push(Action::PixiGlobalInstall(action));
+            } else if left_trimmed_line.contains("git config set --global ") {
+                let action =
+                    parse_line_with_git_config_set_global(left_trimmed_line, &mut git_map)?;
+                ordered_actions.push(Action::GitConfigSetGlobal(action));
             }
             anyhow::Ok(())
         })()
         .with_context(|| format!("failed to parse line {line_number}: {}", quote(line)))?;
     }
-    Ok(State { ordered_actions, cargo_map, pixi_map })
+    Ok(State { ordered_actions, cargo_map, pixi_map, git_map })
 }
 
 // The current crate does not need to be optimized. So the return type of `compute_commands` could
@@ -62,12 +73,16 @@ pub fn compute_commands<'a, 'b>(
                 compute_crate_removal_command(&target_state.cargo_map, action),
             Action::PixiGlobalInstall(action) =>
                 compute_recipe_removal_command(&target_state.pixi_map, *action),
+            Action::GitConfigSetGlobal(action) =>
+                compute_git_global_config_removal_command(&target_state.git_map, *action),
         }),
         target_state.ordered_actions.iter().filter_map(|action| match action {
             Action::CargoInstall(action) =>
                 compute_crate_install_or_update_command(&current_state.cargo_map, action),
             Action::PixiGlobalInstall(action) =>
                 compute_recipe_install_or_update_command(&current_state.pixi_map, *action),
+            Action::GitConfigSetGlobal(action) =>
+                compute_git_global_config_set_or_update_command(&current_state.git_map, *action),
         }),
     ]
 }
