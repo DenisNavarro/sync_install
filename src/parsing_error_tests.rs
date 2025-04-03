@@ -43,24 +43,11 @@ fn same_crate_in_a_previous_line() -> anyhow::Result<()> {
 #[test]
 fn pixi_global_install_without_expected_suffix() -> anyhow::Result<()> {
     parse_first_arg_and_check_error_contains(
-        "RUN pixi global install git=2.49.0",
-        [
-            "failed to parse line 1: ",
-            r#"line with "pixi global install " but which does not end with "; \""#,
-        ],
-    )
-}
-
-#[test]
-fn pixi_global_install_without_expected_prefix() -> anyhow::Result<()> {
-    parse_first_arg_and_check_error_contains(
         r"RUN set -eux; \
-            echo pixi global install git=2.49.0; \
-            pixi global list",
+            pixi global install git=2.49.0",
         [
             "failed to parse line 2: ",
-            r#"left trimmed line with "pixi global install " but which "#,
-            r#"does not start with "pixi global install ""#,
+            r#"line with "pixi global install " but which does not end with "; \""#,
         ],
     )
 }
@@ -112,24 +99,11 @@ fn same_recipe_in_a_previous_line() -> anyhow::Result<()> {
 #[test]
 fn git_config_set_global_without_expected_suffix() -> anyhow::Result<()> {
     parse_first_arg_and_check_error_contains(
-        "RUN git config set --global init.defaultBranch main",
-        [
-            "failed to parse line 1: ",
-            r#"line with "git config set --global " but which does not end with "; \""#,
-        ],
-    )
-}
-
-#[test]
-fn git_config_set_global_without_expected_prefix() -> anyhow::Result<()> {
-    parse_first_arg_and_check_error_contains(
-        r#"RUN set -eux; \
-            echo git config set --global init.defaultBranch main; \
-            cat "$HOME/.gitconfig""#,
+        r"RUN set -eux; \
+            git config set --global init.defaultBranch main",
         [
             "failed to parse line 2: ",
-            r#"left trimmed line with "git config set --global " but which "#,
-            r#"does not start with "git config set --global ""#,
+            r#"line with "git config set --global " but which does not end with "; \""#,
         ],
     )
 }

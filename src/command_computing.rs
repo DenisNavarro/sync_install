@@ -10,11 +10,12 @@ use crate::command::Command;
 use crate::common::quote;
 use crate::git_handling::{
     GitConfigOption, GitConfigSetGlobal, GitConfigValue, compute_git_global_config_removal_command,
-    compute_git_global_config_set_or_update_command, parse_line_with_git_config_set_global,
+    compute_git_global_config_set_or_update_command,
+    parse_stripped_line_with_git_config_set_global,
 };
 use crate::pixi_handling::{
     PixiGlobalInstall, Recipe, RecipeAndVersion, compute_recipe_install_or_update_command,
-    compute_recipe_removal_command, parse_line_with_pixi_global_install,
+    compute_recipe_removal_command, parse_stripped_line_with_pixi_global_install,
 };
 
 pub struct State<'a> {
@@ -45,12 +46,11 @@ pub fn parse_state_from_file_content(file_content: &str) -> anyhow::Result<State
             if left_trimmed_line.contains("cargo install ") {
                 let action = parse_line_with_cargo_install(left_trimmed_line, &mut cargo_map)?;
                 ordered_actions.push(Action::CargoInstall(action));
-            } else if left_trimmed_line.contains("pixi global install ") {
-                let action = parse_line_with_pixi_global_install(left_trimmed_line, &mut pixi_map)?;
+            } else if let Some(sl) = left_trimmed_line.strip_prefix("pixi global install ") {
+                let action = parse_stripped_line_with_pixi_global_install(sl, &mut pixi_map)?;
                 ordered_actions.push(Action::PixiGlobalInstall(action));
-            } else if left_trimmed_line.contains("git config set --global ") {
-                let action =
-                    parse_line_with_git_config_set_global(left_trimmed_line, &mut git_map)?;
+            } else if let Some(sl) = left_trimmed_line.strip_prefix("git config set --global ") {
+                let action = parse_stripped_line_with_git_config_set_global(sl, &mut git_map)?;
                 ordered_actions.push(Action::GitConfigSetGlobal(action));
             }
             anyhow::Ok(())

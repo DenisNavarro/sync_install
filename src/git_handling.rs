@@ -14,24 +14,15 @@ pub use nonempty_str_types::{GitConfigOption, GitConfigValue};
 #[derive(Clone, Copy)]
 pub struct GitConfigSetGlobal<'a>(GitConfigOption<'a>, GitConfigValue<'a>);
 
-pub fn parse_line_with_git_config_set_global<'a>(
-    left_trimmed_line: &'a str,
+pub fn parse_stripped_line_with_git_config_set_global<'a>(
+    stripped_line: &'a str,
     git_map: &mut HashMap<GitConfigOption<'a>, GitConfigValue<'a>>,
 ) -> anyhow::Result<GitConfigSetGlobal<'a>> {
-    assert_eq!(left_trimmed_line.trim_start(), left_trimmed_line);
-    assert!(left_trimmed_line.contains("git config set --global "));
     let expected_suffix = "; \\";
-    let Some(command_str) = left_trimmed_line.strip_suffix(expected_suffix) else {
+    let Some(option_and_value) = stripped_line.strip_suffix(expected_suffix) else {
         bail!(
             "line with \"git config set --global \" but which does not end with {}",
             quote(expected_suffix)
-        );
-    };
-    let expected_prefix = "git config set --global ";
-    let Some(option_and_value) = command_str.strip_prefix(expected_prefix) else {
-        bail!(
-            "left trimmed line with \"git config set --global \" but which does not start with {}",
-            quote(expected_prefix)
         );
     };
     let Some((option_str, value_str)) = option_and_value.split_once(' ') else {

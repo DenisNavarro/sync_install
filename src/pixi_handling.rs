@@ -14,24 +14,15 @@ pub use nonempty_str_types::{Recipe, RecipeAndVersion};
 #[derive(Clone, Copy)]
 pub struct PixiGlobalInstall<'a>(Recipe<'a>, RecipeAndVersion<'a>);
 
-pub fn parse_line_with_pixi_global_install<'a>(
-    left_trimmed_line: &'a str,
+pub fn parse_stripped_line_with_pixi_global_install<'a>(
+    stripped_line: &'a str,
     pixi_map: &mut HashMap<Recipe<'a>, RecipeAndVersion<'a>>,
 ) -> anyhow::Result<PixiGlobalInstall<'a>> {
-    assert_eq!(left_trimmed_line.trim_start(), left_trimmed_line);
-    assert!(left_trimmed_line.contains("pixi global install "));
     let expected_suffix = "; \\";
-    let Some(command_str) = left_trimmed_line.strip_suffix(expected_suffix) else {
+    let Some(recipe_and_version_str) = stripped_line.strip_suffix(expected_suffix) else {
         bail!(
             "line with \"pixi global install \" but which does not end with {}",
             quote(expected_suffix)
-        );
-    };
-    let expected_prefix = "pixi global install ";
-    let Some(recipe_and_version_str) = command_str.strip_prefix(expected_prefix) else {
-        bail!(
-            "left trimmed line with \"pixi global install \" but which does not start with {}",
-            quote(expected_prefix)
         );
     };
     let recipe_and_version = RecipeAndVersion::from_str(recipe_and_version_str)?;
