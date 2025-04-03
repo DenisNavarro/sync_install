@@ -1,4 +1,4 @@
-use std::collections::BTreeMap;
+use std::collections::HashMap;
 
 use anyhow::bail;
 
@@ -14,7 +14,7 @@ pub struct CargoInstall<'a>(CrateName<'a>, Command<'a>);
 
 pub fn parse_line_with_cargo_install<'a>(
     left_trimmed_line: &'a str,
-    cargo_map: &mut BTreeMap<CrateName<'a>, Command<'a>>,
+    cargo_map: &mut HashMap<CrateName<'a>, Command<'a>>,
 ) -> anyhow::Result<CargoInstall<'a>> {
     assert_eq!(left_trimmed_line.trim_start(), left_trimmed_line);
     assert!(left_trimmed_line.contains("cargo install "));
@@ -44,7 +44,7 @@ pub fn parse_line_with_cargo_install<'a>(
 }
 
 pub fn compute_crate_removal_command<'a>(
-    target_state_cargo_map: &BTreeMap<CrateName<'a>, Command<'a>>,
+    target_state_cargo_map: &HashMap<CrateName<'a>, Command<'a>>,
     current_state_action: &CargoInstall<'a>,
 ) -> Option<Command<'a>> {
     let crate_name = &current_state_action.0;
@@ -53,7 +53,7 @@ pub fn compute_crate_removal_command<'a>(
 }
 
 pub fn compute_crate_install_or_update_command<'a>(
-    current_state_cargo_map: &BTreeMap<CrateName<'a>, Command<'a>>,
+    current_state_cargo_map: &HashMap<CrateName<'a>, Command<'a>>,
     target_state_action: &CargoInstall<'a>,
 ) -> Option<Command<'a>> {
     let CargoInstall(crate_name, target_state_command) = target_state_action;

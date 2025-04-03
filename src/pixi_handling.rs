@@ -1,4 +1,4 @@
-use std::collections::BTreeMap;
+use std::collections::HashMap;
 
 use anyhow::{Context as _, bail};
 
@@ -16,7 +16,7 @@ pub struct PixiGlobalInstall<'a>(Recipe<'a>, RecipeAndVersion<'a>);
 
 pub fn parse_line_with_pixi_global_install<'a>(
     left_trimmed_line: &'a str,
-    pixi_map: &mut BTreeMap<Recipe<'a>, RecipeAndVersion<'a>>,
+    pixi_map: &mut HashMap<Recipe<'a>, RecipeAndVersion<'a>>,
 ) -> anyhow::Result<PixiGlobalInstall<'a>> {
     assert_eq!(left_trimmed_line.trim_start(), left_trimmed_line);
     assert!(left_trimmed_line.contains("pixi global install "));
@@ -49,7 +49,7 @@ pub fn parse_line_with_pixi_global_install<'a>(
 }
 
 pub fn compute_recipe_removal_command<'a>(
-    target_state_pixi_map: &BTreeMap<Recipe<'a>, RecipeAndVersion<'a>>,
+    target_state_pixi_map: &HashMap<Recipe<'a>, RecipeAndVersion<'a>>,
     current_state_action: PixiGlobalInstall<'a>,
 ) -> Option<Command<'a>> {
     let recipe = &current_state_action.0;
@@ -58,7 +58,7 @@ pub fn compute_recipe_removal_command<'a>(
 }
 
 pub fn compute_recipe_install_or_update_command<'a>(
-    current_state_pixi_map: &BTreeMap<Recipe<'a>, RecipeAndVersion<'a>>,
+    current_state_pixi_map: &HashMap<Recipe<'a>, RecipeAndVersion<'a>>,
     target_state_action: PixiGlobalInstall<'a>,
 ) -> Option<Command<'a>> {
     let PixiGlobalInstall(recipe, target_state_recipe_and_version) = target_state_action;

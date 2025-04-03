@@ -1,4 +1,4 @@
-use std::collections::BTreeMap;
+use std::collections::HashMap;
 
 use anyhow::Context as _;
 
@@ -19,9 +19,9 @@ use crate::pixi_handling::{
 
 pub struct State<'a> {
     ordered_actions: Vec<Action<'a>>,
-    cargo_map: BTreeMap<CrateName<'a>, Command<'a>>,
-    pixi_map: BTreeMap<Recipe<'a>, RecipeAndVersion<'a>>,
-    git_map: BTreeMap<GitConfigOption<'a>, GitConfigValue<'a>>,
+    cargo_map: HashMap<CrateName<'a>, Command<'a>>,
+    pixi_map: HashMap<Recipe<'a>, RecipeAndVersion<'a>>,
+    git_map: HashMap<GitConfigOption<'a>, GitConfigValue<'a>>,
 }
 
 enum Action<'a> {
@@ -32,9 +32,9 @@ enum Action<'a> {
 
 pub fn parse_state_from_file_content(file_content: &str) -> anyhow::Result<State> {
     let mut ordered_actions = Vec::new();
-    let mut cargo_map = BTreeMap::new();
-    let mut pixi_map = BTreeMap::new();
-    let mut git_map = BTreeMap::new();
+    let mut cargo_map = HashMap::new();
+    let mut pixi_map = HashMap::new();
+    let mut git_map = HashMap::new();
     for (index, line) in file_content.lines().enumerate() {
         let line_number = index + 1;
         let left_trimmed_line = line.trim_start();

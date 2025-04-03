@@ -1,4 +1,4 @@
-use std::collections::BTreeMap;
+use std::collections::HashMap;
 
 use anyhow::bail;
 
@@ -16,7 +16,7 @@ pub struct GitConfigSetGlobal<'a>(GitConfigOption<'a>, GitConfigValue<'a>);
 
 pub fn parse_line_with_git_config_set_global<'a>(
     left_trimmed_line: &'a str,
-    git_map: &mut BTreeMap<GitConfigOption<'a>, GitConfigValue<'a>>,
+    git_map: &mut HashMap<GitConfigOption<'a>, GitConfigValue<'a>>,
 ) -> anyhow::Result<GitConfigSetGlobal<'a>> {
     assert_eq!(left_trimmed_line.trim_start(), left_trimmed_line);
     assert!(left_trimmed_line.contains("git config set --global "));
@@ -50,7 +50,7 @@ pub fn parse_line_with_git_config_set_global<'a>(
 }
 
 pub fn compute_git_global_config_removal_command<'a>(
-    target_state_git_map: &BTreeMap<GitConfigOption<'a>, GitConfigValue<'a>>,
+    target_state_git_map: &HashMap<GitConfigOption<'a>, GitConfigValue<'a>>,
     current_state_action: GitConfigSetGlobal<'a>,
 ) -> Option<Command<'a>> {
     let option = &current_state_action.0;
@@ -59,7 +59,7 @@ pub fn compute_git_global_config_removal_command<'a>(
 }
 
 pub fn compute_git_global_config_set_or_update_command<'a>(
-    current_state_git_map: &BTreeMap<GitConfigOption<'a>, GitConfigValue<'a>>,
+    current_state_git_map: &HashMap<GitConfigOption<'a>, GitConfigValue<'a>>,
     target_state_action: GitConfigSetGlobal<'a>,
 ) -> Option<Command<'a>> {
     let GitConfigSetGlobal(option, target_state_value) = target_state_action;

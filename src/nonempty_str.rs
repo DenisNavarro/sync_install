@@ -1,7 +1,7 @@
 #[macro_export]
 macro_rules! newtype {
     ($ty:ident, error_msg = $error_msg:expr $(,)?) => {
-        #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
+        #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash)]
         pub struct $ty<'a>(&'a str);
 
         impl<'a> $ty<'a> {
