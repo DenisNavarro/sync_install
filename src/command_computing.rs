@@ -41,7 +41,7 @@ pub fn parse_state_from_file_content(file_content: &str) -> anyhow::Result<State
         let left_trimmed_line = line.trim_start();
         if left_trimmed_line.bytes().next() == Some(b'#') {
             continue;
-        };
+        }
         (|| {
             if left_trimmed_line.contains("cargo install ") {
                 let action = parse_line_with_cargo_install(left_trimmed_line, &mut cargo_map)?;
