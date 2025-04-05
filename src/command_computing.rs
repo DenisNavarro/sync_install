@@ -36,8 +36,7 @@ pub fn parse_state_from_file_content(file_content: &str) -> anyhow::Result<State
     let mut cargo_map = HashMap::new();
     let mut pixi_map = HashMap::new();
     let mut git_map = HashMap::new();
-    for (index, line) in file_content.lines().enumerate() {
-        let line_number = index + 1;
+    for (line_number, line) in (1..).zip(file_content.lines()) {
         let left_trimmed_line = line.trim_start();
         if left_trimmed_line.bytes().next() == Some(b'#') {
             continue;
