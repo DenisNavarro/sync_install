@@ -34,7 +34,7 @@ use common::quote_path;
 /// For example, if the content of the `current_state` file is:
 ///
 /// ```
-/// FROM docker.io/library/rust:1.85.1-slim-bookworm
+/// FROM docker.io/library/rust:1.86.0-slim-bookworm
 /// RUN set -eux; \
 ///     cargo install cargo-cache --version 0.8.3 --locked; \
 ///     cargo install cocogitto --version 6.3.0 --locked; \
@@ -46,7 +46,7 @@ use common::quote_path;
 /// and if the content of the `target_state` file is:
 ///
 /// ```
-/// FROM docker.io/library/rust:1.85.1-slim-bookworm
+/// FROM docker.io/library/rust:1.86.0-slim-bookworm
 /// RUN set -eux; \
 ///     cargo install cargo-cache --version 0.8.3; \
 ///     cargo install cocogitto --version 6.3.0 --locked; \
