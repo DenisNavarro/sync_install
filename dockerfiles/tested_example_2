@@ -22,6 +22,7 @@ ENV PATH="$PATH:$HOME/.pixi/bin"
 
 RUN set -eux; \
     git config set --global init.defaultBranch main; \
+    git config set --global user.name 'John Smith'; \
     cat "$HOME/.gitconfig"
 
 CMD ["/bin/bash"]

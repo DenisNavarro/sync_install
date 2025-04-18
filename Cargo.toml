@@ -8,6 +8,7 @@ rust-version = "1.85.0"
 anyhow = "1"
 clap = { version = "4", features = ["derive"] }
 itertools = "0.13"
+shlex = "1"
 uniquote = "4"
 
 [dev-dependencies]

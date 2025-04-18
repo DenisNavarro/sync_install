@@ -4,7 +4,6 @@
 use std::fmt;
 
 use anyhow::{Context as _, ensure};
-use itertools::Itertools as _; // format
 
 #[derive(Clone, PartialEq, Eq)]
 pub struct Command<'a>(Vec<&'a str>);
@@ -37,8 +36,7 @@ impl<'a> Command<'a> {
         Self(self.0.iter().copied().chain(args).collect())
     }
     pub fn display(&self) -> impl fmt::Display {
-        // I don't need `shlex::try_join` for my use case.
-        self.0.iter().format(" ")
+        shlex::try_join(self.0.iter().copied()).unwrap()
     }
 }
 

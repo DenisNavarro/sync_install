@@ -19,6 +19,7 @@ fn install() {
             "pixi run -e openssl-pkgconfig cargo install cargo-update --version 16.3.0 --locked",
             "pixi global install git=2.46.0",
             "git config set --global init.defaultBranch master",
+            "git config set --global user.name 'John Smith'",
         ]),
     );
 }
@@ -46,6 +47,7 @@ fn remove() {
         parse_args_and_compute_commands(current_state_file_content, target_state_file_content)
             .unwrap(),
         split_commands([
+            "git config unset --global user.name",
             "git config unset --global init.defaultBranch",
             "pixi global uninstall git",
             "cargo uninstall cargo-update",
@@ -78,7 +80,6 @@ fn parse_args_and_compute_commands(
     Ok(compute_commands(&current_state, &target_state).map(Command::into_vec).collect())
 }
 
-fn split_commands<const N: usize>(commands: [&'static str; N]) -> Vec<Vec<&'static str>> {
-    // I don't need `shlex::split` for my use case.
-    commands.into_iter().map(|command| command.split(' ').collect::<Vec<_>>()).collect::<Vec<_>>()
+fn split_commands<const N: usize>(commands: [&'static str; N]) -> Vec<Vec<String>> {
+    commands.into_iter().map(|command| shlex::split(command).unwrap()).collect::<Vec<_>>()
 }

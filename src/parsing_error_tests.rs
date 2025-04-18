@@ -129,12 +129,32 @@ fn git_config_set_global_with_empty_option() -> anyhow::Result<()> {
 }
 
 #[test]
-fn git_config_set_global_with_empty_value() -> anyhow::Result<()> {
+fn git_config_set_global_with_empty_value_1() -> anyhow::Result<()> {
     parse_first_arg_and_check_error_contains(
         r#"RUN set -eux; \
             git config set --global init.defaultBranch ; \
             cat "$HOME/.gitconfig""#,
         ["failed to parse line 2: ", "empty value"],
+    )
+}
+
+#[test]
+fn git_config_set_global_with_empty_value_2() -> anyhow::Result<()> {
+    parse_first_arg_and_check_error_contains(
+        r#"RUN set -eux; \
+            git config set --global init.defaultBranch ''; \
+            cat "$HOME/.gitconfig""#,
+        ["failed to parse line 2: ", "empty value"],
+    )
+}
+
+#[test]
+fn git_config_set_global_without_ending_apostrophe() -> anyhow::Result<()> {
+    parse_first_arg_and_check_error_contains(
+        r#"RUN set -eux; \
+            git config set --global user.name 'John Smith; \
+            cat "$HOME/.gitconfig""#,
+        ["failed to parse line 2: ", r#"missing ending apostrophe in "'John Smith""#],
     )
 }
 

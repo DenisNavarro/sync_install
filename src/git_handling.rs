@@ -25,10 +25,17 @@ pub fn parse_stripped_line_with_git_config_set_global<'a>(
             quote(expected_suffix)
         );
     };
-    let Some((option_str, value_str)) = option_and_value.split_once(' ') else {
+    let Some((option_str, mut value_str)) = option_and_value.split_once(' ') else {
         bail!("{} git global option without value", quote(option_and_value));
     };
     let option = GitConfigOption::from_str(option_str)?;
+    if let Some(("'", rest)) = value_str.split_at_checked(1) {
+        if let Some(new_value_str) = rest.strip_suffix('\'') {
+            value_str = new_value_str;
+        } else {
+            bail!("missing ending apostrophe in {}", quote(value_str));
+        }
+    }
     let value = GitConfigValue::from_str(value_str)?;
     if let Some(previous_value) = git_map.insert(option, value) {
         bail!(
