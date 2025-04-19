@@ -1,6 +1,6 @@
 use std::collections::HashMap;
 
-use anyhow::bail;
+use anyhow::{Context as _, bail};
 
 use crate::command::{Command, command};
 use crate::common::quote;
@@ -29,12 +29,10 @@ pub fn parse_stripped_line_with_git_config_set_global<'a>(
         bail!("{} git global option without value", quote(option_and_value));
     };
     let option = GitConfigOption::from_str(option_str)?;
-    if let Some(("'", rest)) = value_str.split_at_checked(1) {
-        if let Some(new_value_str) = rest.strip_suffix('\'') {
-            value_str = new_value_str;
-        } else {
-            bail!("missing ending apostrophe in {}", quote(value_str));
-        }
+    if let Some(rest) = value_str.strip_prefix('\'') {
+        value_str = rest
+            .strip_suffix('\'')
+            .with_context(|| format!("missing ending apostrophe in {}", quote(value_str)))?;
     }
     let value = GitConfigValue::from_str(value_str)?;
     if let Some(previous_value) = git_map.insert(option, value) {
