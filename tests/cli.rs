@@ -6,7 +6,7 @@ const EXPECTED_OUTPUT: &str =
     "This is a dry run. Add the --go option to execute the below command(s).
 ---> [cargo uninstall fsays]
 ---> [cargo install cargo-cache --version 0.8.3 --force]
----> [cargo install pixi --git https://github.com/prefix-dev/pixi.git --tag v0.44.0 --locked]
+---> [cargo install pixi --git https://github.com/prefix-dev/pixi.git --tag v0.46.0 --locked]
 ";
 
 #[test]
