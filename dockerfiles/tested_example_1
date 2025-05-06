@@ -15,7 +15,7 @@ RUN set -eux; \
 
 RUN set -eux; \
     pixi global install git=2.46.0; \
-    pixi global list
+    pixi clean cache --yes
 
 ENV HOME="/root"
 ENV PATH="$PATH:$HOME/.pixi/bin"

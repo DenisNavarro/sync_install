@@ -57,7 +57,7 @@ fn pixi_global_install_without_recipe_and_version() -> anyhow::Result<()> {
     parse_first_arg_and_check_error_contains(
         r"RUN set -eux; \
             pixi global install ; \
-            pixi global list",
+            pixi clean cache --yes",
         ["failed to parse line 2: ", "neither recipe nor version"],
     )
 }
@@ -67,7 +67,7 @@ fn pixi_global_install_without_equal() -> anyhow::Result<()> {
     parse_first_arg_and_check_error_contains(
         r"RUN set -eux; \
             pixi global install git; \
-            pixi global list",
+            pixi clean cache --yes",
         ["failed to parse line 2: ", "'=' is missing"],
     )
 }
@@ -77,7 +77,7 @@ fn pixi_global_install_with_empty_recipe() -> anyhow::Result<()> {
     parse_first_arg_and_check_error_contains(
         r"RUN set -eux; \
             pixi global install =2.49.0; \
-            pixi global list",
+            pixi clean cache --yes",
         ["failed to parse line 2: ", "empty recipe"],
     )
 }
@@ -88,7 +88,7 @@ fn same_recipe_in_a_previous_line() -> anyhow::Result<()> {
         r"RUN set -eux; \
             pixi global install git=2.46.0; \
             pixi global install git=2.49.0; \
-            pixi global list",
+            pixi clean cache --yes",
         [
             "failed to parse line 3: ",
             r#""git" recipe already installed in a previous line: it was git=2.46.0"#,
