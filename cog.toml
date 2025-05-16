@@ -8,9 +8,9 @@ cog verify --file "$1"
 script = """#!/bin/sh
 set -e
 cargo +1.85.0 test --locked --workspace
-cargo +1.86.0 fmt --all --check
-cargo +1.86.0 clippy --all-features --all-targets --locked --workspace -- -D warnings
-cargo +1.86.0 test --locked --workspace
+cargo +1.87.0 fmt --all --check
+cargo +1.87.0 clippy --all-features --all-targets --locked --workspace -- -D warnings
+cargo +1.87.0 test --locked --workspace
 cd dockerfiles
 podman build -f current_state_from_readme -t sync_install_current_state_from_readme
 podman build -f target_state_from_readme -t sync_install_target_state_from_readme
