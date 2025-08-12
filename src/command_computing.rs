@@ -31,7 +31,7 @@ enum Action<'a> {
     GitConfigSetGlobal(GitConfigSetGlobal<'a>),
 }
 
-pub fn parse_state_from_file_content(file_content: &str) -> anyhow::Result<State> {
+pub fn parse_state_from_file_content(file_content: &str) -> anyhow::Result<State<'_>> {
     let mut ordered_actions = Vec::new();
     let mut cargo_map = HashMap::new();
     let mut pixi_map = HashMap::new();
