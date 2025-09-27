@@ -1,9 +1,9 @@
-FROM docker.io/library/rust:1.87.0-slim-bookworm
+FROM docker.io/library/rust:1.90.0-slim-bookworm
 
 RUN set -eux; \
     cargo install cargo-cache --version 0.8.3 --locked; \
     # cargo install fsays --version 0.3.0 --locked; \
-    cargo install pixi --git https://github.com/prefix-dev/pixi.git --tag v0.47.0 --locked; \
+    cargo install pixi --git https://github.com/prefix-dev/pixi.git --tag v0.55.0 --locked; \
     cargo cache -r all
 
 WORKDIR /work
@@ -14,7 +14,7 @@ RUN set -eux; \
     cargo cache -r all
 
 RUN set -eux; \
-    pixi global install git=2.46.0; \
+    pixi global install git=2.49.0; \
     pixi clean cache --yes
 
 ENV HOME="/root"
