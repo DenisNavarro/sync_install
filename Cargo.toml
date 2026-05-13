@@ -11,10 +11,6 @@ itertools = "0.13"
 shlex = "1"
 uniquote = "4"
 
-[dev-dependencies]
-camino = "1"
-cargo_metadata = "0.18"
-
 [profile.dev]
 debug = false
 
