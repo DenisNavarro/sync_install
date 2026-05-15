@@ -66,7 +66,7 @@ ensure_sync_install_is_installed() {
     if ! command -v sync_install >/dev/null 2>&1; then
         install_apt_package_if_executable_is_missing gcc
         ensure_apt_package_is_installed libc6-dev
-        cargo install --git https://github.com/DenisNavarro/sync_install --tag 0.11.1 --locked
+        cargo install --git https://github.com/DenisNavarro/sync_install --tag 0.12.0 --locked
     fi
 }
 
