@@ -45,7 +45,12 @@ This is a dry run. Add the --go option to execute the below command(s).
 ---> [cargo install pixi --git https://github.com/prefix-dev/pixi.git --tag v0.68.0 --locked]
 ```
 
-Warning: This program is limited to a few use cases of its author and the
+`sync_install` is used by [`setup.bash`](./idempotent_setup/setup.bash), an idempotent script to
+install dependencies. You may be interested in downloading this script and adapting it to your
+needs when you get a new computer with a Debian-like OS.
+See [`idempotent_setup`](./idempotent_setup) for more details.
+
+Warning: `sync_install` is limited to a few use cases of its author and the
 format of the `Dockerfile` contents must follow some arbitrary rules.
 
 Tip: Update by comparing a `Dockerfile` to its state in the Git index:
