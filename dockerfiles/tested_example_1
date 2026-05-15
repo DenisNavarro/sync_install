@@ -18,7 +18,7 @@ RUN set -eux; \
     pixi clean cache --yes
 
 ENV HOME="/root"
-ENV PATH="$PATH:$HOME/.pixi/bin"
+ENV PATH="$HOME/.pixi/bin:$PATH"
 
 RUN set -eux; \
     git config set --global init.defaultBranch master; \
