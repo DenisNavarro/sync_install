@@ -5,6 +5,7 @@ RUN set -eux; \
     cargo install bat --version 0.26.1 --locked; \
     cargo install cargo-cache --version 0.8.3; \
     cargo install chars --version 0.7.0 --locked; \
+    cargo install cocogitto --version 7.0.0 --locked; \
     cargo install du-dust --version 1.2.4 --locked; \
     cargo install dua-cli --version 2.34.0 --locked; \
     cargo install eza --version 0.23.4 --locked; \
