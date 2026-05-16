@@ -16,7 +16,7 @@ fn install() {
         split_commands([
             "cargo install cargo-cache --version 0.8.3 --locked",
             "cargo install pixi --git https://github.com/prefix-dev/pixi.git --tag v0.68.0 --locked",
-            "pixi run -e openssl-pkgconfig cargo install cargo-update --version 16.3.0 --locked",
+            "pixi run -e openssl-pkgconfig cargo install cargo-update --version 20.0.0 --locked",
             "pixi global install git=2.51.2",
             "git config set --global init.defaultBranch master",
             "git config set --global user.name 'John Smith'",

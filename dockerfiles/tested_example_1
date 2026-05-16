@@ -10,7 +10,7 @@ WORKDIR /work
 COPY pixi.toml pixi.lock /work/
 
 RUN set -eux; \
-    pixi run -e openssl-pkgconfig cargo install cargo-update --version 16.3.0 --locked; \
+    pixi run -e openssl-pkgconfig cargo install cargo-update --version 20.0.0 --locked; \
     cargo cache -r all
 
 RUN set -eux; \
