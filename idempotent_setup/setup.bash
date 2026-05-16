@@ -25,9 +25,9 @@ ensure_vivaldi_is_installed() {
 
 ensure_vscodium_and_its_extensions_are_installed() {
     ensure_vscodium_is_installed
-    for dep in timonwong.shellcheck rust-lang.rust-analyzer; do
-        if ! codium --list-extensions | grep -Fxq "$dep"; then
-            codium --install-extension "$dep"
+    for ext in timonwong.shellcheck rust-lang.rust-analyzer; do
+        if ! codium --list-extensions | grep -Fxq "$ext"; then
+            codium --install-extension "$ext"
         fi
     done
 }
