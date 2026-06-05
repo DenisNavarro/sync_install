@@ -4,7 +4,7 @@ set -xeuo pipefail
 main() {
     #ensure_vivaldi_is_installed
     #ensure_vscodium_and_its_extensions_are_installed
-    install_apt_package_if_executable_is_missing vlc
+    install_apt_package_for_each_missing_executable vlc gimp
     apply_sync_install
     ensure_git_aliases
 }
@@ -13,8 +13,7 @@ ensure_vivaldi_is_installed() {
     if ! command -v vivaldi >/dev/null 2>&1; then
         install_apt_package_if_executable_is_missing wget
         install_apt_package_if_executable_is_missing software-properties-common add-apt-repository
-        ensure_apt_package_is_installed ca-certificates
-        ensure_apt_package_is_installed gnupg
+        ensure_apt_packages_are_installed ca-certificates gnupg
         # See https://doc.ubuntu-fr.org/vivaldi
         wget -qO- https://repo.vivaldi.com/archive/linux_signing_key.pub | sudo apt-key add -
         sudo add-apt-repository 'deb https://repo.vivaldi.com/archive/deb/ stable main'
@@ -35,8 +34,7 @@ ensure_vscodium_and_its_extensions_are_installed() {
 ensure_vscodium_is_installed() {
     if ! command -v codium >/dev/null 2>&1; then
         install_apt_package_if_executable_is_missing wget
-        ensure_apt_package_is_installed ca-certificates
-        ensure_apt_package_is_installed gnupg
+        ensure_apt_packages_are_installed ca-certificates gnupg
         # See https://vscodium.com/
         wget -qO - https://gitlab.com/paulcarroty/vscodium-deb-rpm-repo/raw/master/pub.gpg \
             | gpg --dearmor \
@@ -95,6 +93,12 @@ ensure_git_aliases() {
     fi
 }
 
+ensure_apt_packages_are_installed() {
+    for pkg in "$@"; do
+        ensure_apt_package_is_installed "$pkg"
+    done
+}
+
 ensure_apt_package_is_installed() {
     status="$(dpkg-query -Wf='${db:Status-Status}' "$1")" || rc=$?
     rc=${rc:-0}
@@ -102,6 +106,12 @@ ensure_apt_package_is_installed() {
         sudo apt-get update
         sudo apt-get install -y --no-install-recommends "$1"
     fi
+}
+
+install_apt_package_for_each_missing_executable() {
+    for pkg in "$@"; do
+        install_apt_package_if_executable_is_missing "$pkg"
+    done
 }
 
 install_apt_package_if_executable_is_missing() {
