@@ -23,9 +23,10 @@ edit :
 help:
 	@grep '^.PHONY: .* # ' Makefile | sed 's/\.PHONY: \(.*\) # \(.*\)/\1\t\2/' | expand -t 24
 
-.PHONY: install_git_hooks # Install Git hooks with Cocogitto
+.PHONY: install_git_hooks # Install Git hooks
 install_git_hooks:
-	cog install-hook --all --overwrite
+	cp commit-msg.sh .git/hooks/commit-msg
+	cp pre-commit.sh .git/hooks/pre-commit
 
 .PHONY: install_rust_toolchains # Install the Rust toolchains used by the Git hooks
 install_rust_toolchains:

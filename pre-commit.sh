@@ -1,22 +1,18 @@
-[git_hooks.commit-msg]
-script = """#!/bin/sh
-set -e
-cog verify --file "$1"
-"""
+#!/bin/sh
 
-[git_hooks.pre-commit]
-script = """#!/bin/sh
 set -e
+
 cargo +1.85.1 test --locked --workspace
 cargo +1.95.0 fmt --all --check
 cargo +1.95.0 clippy --all-features --all-targets --locked --workspace -- -D warnings
 cargo +1.95.0 test --locked --workspace
+
 cd dockerfiles
 podman build -f current_state_from_readme -t sync_install_current_state_from_readme
 podman build -f target_state_from_readme -t sync_install_target_state_from_readme
 podman build -f tested_example_1 -t sync_install_tested_example_1
 podman build -f tested_example_2 -t sync_install_tested_example_2
+
 cd ../idempotent_setup
 bash verify_dockerfile_and_setup.bash
 podman image prune -f
-"""
