@@ -2,6 +2,8 @@
 
 set -e
 
+cd "$(git rev-parse --show-toplevel)"
+
 cargo +1.85.1 test --locked --workspace
 cargo +1.95.0 fmt --all --check
 cargo +1.95.0 clippy --all-features --all-targets --locked --workspace -- -D warnings
@@ -16,7 +18,6 @@ if ! git diff --cached --quiet -- dockerfiles; then (
     podman image prune -f
 ) fi
 
-if ! git diff --cached --quiet -- idempotent_setup; then (
-    cd idempotent_setup
-    bash verify_dockerfile_and_setup.bash
-) fi
+if ! git diff --cached --quiet -- idempotent_setup; then
+    bash idempotent_setup/verify_dockerfile_and_setup.bash
+fi

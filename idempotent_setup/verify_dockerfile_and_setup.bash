@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 set -xeuo pipefail
 
+cd "$(dirname "${BASH_SOURCE[0]}")"
+
 podman build -t dockerfile_next_to_setup .
 
 # Check idempotency of `setup.bash` without `sudo`

@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 set -xeuo pipefail
 
+cd "$(dirname "${BASH_SOURCE[0]}")"
+
 main() {
     #ensure_vivaldi_is_installed
     #ensure_vscodium_and_its_extensions_are_installed
