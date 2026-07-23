@@ -15,18 +15,12 @@ debug : test.maketarget
 clean :
 	git clean -dXf
 
-.PHONY: edit # Edit the `Makefile`
-edit :
-	@codium Makefile
-
 .PHONY: help # Print each phony target with its description
 help:
 	@grep '^.PHONY: .* # ' Makefile | sed 's/\.PHONY: \(.*\) # \(.*\)/\1\t\2/' | expand -t 24
 
-.PHONY: install_git_hooks # Install Git hooks
-install_git_hooks:
-	cp commit-msg.sh .git/hooks/commit-msg
-	cp pre-commit.sh .git/hooks/pre-commit
+.PHONY: git_hooks # Update the Git hooks
+git_hooks: .git/hooks/commit-msg .git/hooks/pre-commit
 
 .PHONY: install_rust_toolchains # Install the Rust toolchains used by the Git hooks
 install_rust_toolchains:
@@ -40,6 +34,12 @@ release : test.maketarget
 ################
 # File targets #
 ################
+
+.git/hooks/commit-msg: commit-msg.sh
+	cp -- $< $@
+
+.git/hooks/pre-commit: pre-commit.sh
+	cp -- $< $@
 
 fmt.maketarget : rustfmt.toml $(wildcard src/*.rs) $(wildcard tests/*.rs)
 	cargo fmt && touch $@
