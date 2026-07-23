@@ -4,9 +4,9 @@ set -ex
 cd "$(git rev-parse --show-toplevel)"
 
 cargo +1.85.1 test --locked --workspace
-cargo +1.95.0 fmt --all --check
-cargo +1.95.0 clippy --all-features --all-targets --locked --workspace -- -D warnings
-cargo +1.95.0 test --locked --workspace
+cargo +1.97.1 fmt --all --check
+cargo +1.97.1 clippy --all-features --all-targets --locked --workspace -- -D warnings
+cargo +1.97.1 test --locked --workspace
 
 if ! git diff --cached --quiet -- dockerfiles; then (
     cd dockerfiles

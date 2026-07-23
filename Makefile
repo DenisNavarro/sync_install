@@ -25,7 +25,7 @@ git_hooks: .git/hooks/commit-msg .git/hooks/pre-commit
 .PHONY: install_rust_toolchains # Install the Rust toolchains used by the Git hooks
 install_rust_toolchains:
 	rustup toolchain install 1.85.1 --profile minimal
-	rustup toolchain install 1.95.0 --profile minimal --component clippy,rustfmt
+	rustup toolchain install 1.97.1 --profile minimal --component clippy,rustfmt
 
 .PHONY: release # Release execution
 release : test.maketarget
