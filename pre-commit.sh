@@ -1,5 +1,5 @@
 #!/bin/sh
-set -e
+set -ex
 
 cd "$(git rev-parse --show-toplevel)"
 
