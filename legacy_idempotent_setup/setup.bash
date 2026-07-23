@@ -3,6 +3,8 @@ set -xeuo pipefail
 
 cd "$(dirname "${BASH_SOURCE[0]}")"
 
+RUST_VERSION=1.97.1
+
 main() {
     #ensure_vivaldi_is_installed
     #ensure_vscodium_and_its_extensions_are_installed
@@ -78,7 +80,7 @@ ensure_rust_is_installed() {
             # See https://github.com/rust-lang/docker-rust/blob/master/stable/bookworm/slim/Dockerfile
             wget https://static.rust-lang.org/rustup/archive/1.29.0/x86_64-unknown-linux-gnu/rustup-init
             chmod +x rustup-init
-            ./rustup-init -y --no-modify-path
+            ./rustup-init -y --no-modify-path --default-toolchain "$RUST_VERSION"
             rm rustup-init
         fi
         if [[ ":$PATH:" != *":$HOME/.cargo/bin:"* ]]; then

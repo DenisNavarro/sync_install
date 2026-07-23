@@ -17,6 +17,6 @@ if ! git diff --cached --quiet -- dockerfiles; then (
     podman image prune -f
 ) fi
 
-if ! git diff --cached --quiet -- idempotent_setup; then
-    bash idempotent_setup/verify_dockerfile_and_setup.bash
+if ! git diff --cached --quiet -- legacy_idempotent_setup; then
+    bash legacy_idempotent_setup/verify_dockerfile_and_setup.bash
 fi
