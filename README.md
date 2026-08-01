@@ -5,8 +5,9 @@
 `sync_install` is a CLI which updates what is installed by comparing two `Dockerfile`s.
 
 I used it to update dependencies on my computer until July 2026.
-Soon, in another repository, I will publish an idempotent script which does not depend on
-`sync_install`.
+Since then, I use [`idempotent_setup`][] instead.
+
+[`idempotent_setup`]: https://github.com/DenisNavarro/idempotent_setup
 
 ## Installation
 

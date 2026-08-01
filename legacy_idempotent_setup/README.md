@@ -1,6 +1,6 @@
 
-Idempotent setup
-================
+Legacy idempotent setup
+=======================
 
 `setup.bash` was my previous idempotent script to install dependencies on a Debian-like OS.
 
@@ -12,5 +12,7 @@ remove or update Rust crates and `conda-forge` recipes, you can update the `Dock
 `verify_dockerfile_and_setup.bash` uses Podman to build the `Dockerfile`
 (to check its consistency) and to check `setup.bash` in a Debian image.
 
-An updated version of this script will soon be available in another repository. This new version
-will not depend on `sync_install`.
+An updated version of this script is available in the [`idempotent_setup`][] repository.
+This new version does not depend on `sync_install`.
+
+[`idempotent_setup`]: https://github.com/DenisNavarro/idempotent_setup
