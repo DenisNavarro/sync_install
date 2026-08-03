@@ -66,9 +66,7 @@ If you wonder what features are implemented, you can look at
 Then, if you wonder what are the arbitrary format rules, you can look at
 [more unit tests](./src/parsing_error_tests.rs).
 
-`sync_install` is used by [`setup.bash`](./idempotent_setup/setup.bash), an idempotent script to
-install dependencies on a Debian-like OS.
-See [`legacy_idempotent_setup`](./legacy_idempotent_setup) for more details.
+`sync_install` is used by `setup.bash` from [`legacy_idempotent_setup`](./legacy_idempotent_setup), an idempotent script to install dependencies on a Debian-like OS.
 
 ## Remark
 
