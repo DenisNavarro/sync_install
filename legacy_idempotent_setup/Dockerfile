@@ -1,16 +1,16 @@
-FROM docker.io/library/rust:1.97.1-slim-bookworm
+FROM docker.io/library/rust:1.98.0-slim-bookworm
 
 RUN set -eux; \
     cargo install cargo-cache --version 0.8.3; \
     cargo install cocogitto --version 7.0.0 --locked; \
-    cargo install pixi --git https://github.com/prefix-dev/pixi --tag v0.73.0 --locked; \
+    cargo install pixi --git https://github.com/prefix-dev/pixi --tag v0.77.0 --locked; \
     cargo cache -r all
 
 WORKDIR /work
 COPY pixi.toml pixi.lock /work/
 
 RUN set -eux; \
-    pixi run -e make cargo install uv --git https://github.com/astral-sh/uv --tag 0.11.31 --locked; \
+    pixi run -e make cargo install uv --git https://github.com/astral-sh/uv --tag 0.12.5 --locked; \
     cargo cache -r all
 
 RUN set -eux; \

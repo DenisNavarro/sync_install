@@ -15,7 +15,7 @@ fn install() {
             .unwrap(),
         split_commands([
             "cargo install cargo-cache --version 0.8.3 --locked",
-            "cargo install pixi --git https://github.com/prefix-dev/pixi.git --tag v0.73.0 --locked",
+            "cargo install pixi --git https://github.com/prefix-dev/pixi.git --tag v0.77.0 --locked",
             "pixi run -e make cargo install fd-find --version 10.4.2 --locked",
             "pixi global install git=2.51.2",
             "git config set --global init.defaultBranch master",

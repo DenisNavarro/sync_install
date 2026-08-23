@@ -3,7 +3,7 @@ set -xeuo pipefail
 
 cd "$(dirname "${BASH_SOURCE[0]}")"
 
-RUST_VERSION=1.97.1
+RUST_VERSION=1.98.0
 
 main() {
     #ensure_vivaldi_is_installed
