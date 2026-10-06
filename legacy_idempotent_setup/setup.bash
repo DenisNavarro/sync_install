@@ -3,7 +3,8 @@ set -xeuo pipefail
 
 cd "$(dirname "${BASH_SOURCE[0]}")"
 
-RUST_VERSION=1.98.0
+RUSTUP_VERSION=1.29.1
+RUST_VERSION=1.99.0
 
 main() {
     #ensure_vivaldi_is_installed
@@ -78,7 +79,7 @@ ensure_rust_is_installed() {
             install_apt_package_if_executable_is_missing wget
             ensure_apt_package_is_installed ca-certificates
             # See https://github.com/rust-lang/docker-rust/blob/master/stable/bookworm/slim/Dockerfile
-            wget https://static.rust-lang.org/rustup/archive/1.29.0/x86_64-unknown-linux-gnu/rustup-init
+            wget "https://static.rust-lang.org/rustup/archive/${RUSTUP_VERSION}/x86_64-unknown-linux-gnu/rustup-init"
             chmod +x rustup-init
             ./rustup-init -y --no-modify-path --default-toolchain "$RUST_VERSION"
             rm rustup-init
